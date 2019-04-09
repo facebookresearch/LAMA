@@ -8,7 +8,6 @@ LAMA exposes a transparent and unique interface to use:
 - BERT (Devlin et al., 2018)
 - ELMo (Peters et al., 2018)
 - GPT (Radford et al., 2018)
-- fairseq (Dauphin et al., 2017)
 
 Actually, LAMA is also a beautiful animal.
 
@@ -67,6 +66,13 @@ python lama/eval_generation.py  \
 <img align="middle" src="img/cat_on_the_phone.jpg" height="190" alt="cat_on_the_phone">
 <sub><sup>source: https://commons.wikimedia.org/wiki/File:Bluebell_on_the_phone.jpg</sup></sub>
 
+Note that you could use this functionality to answer _cloze-style_ questions, such as:
+
+```bash
+python lama/eval_generation.py  \
+--lm "bert"  \
+--t "The theory of relativity was developed by [MASK] ."
+```
 
 ## Dependencies
 
@@ -103,6 +109,7 @@ chmod +x download_models.sh
 ```
 The script will create and populate a _pre-trained_language_models_ folder.
 If you are interested in a particular model please edit the script.
+
 
 ## Language Model(s) options
 
@@ -174,6 +181,13 @@ python lama/get_contextual_embeddings.py \
 ```
 
 
+## Acknowledgement
+
+* [https://github.com/huggingface/pytorch-pretrained-BERT](https://github.com/huggingface/pytorch-pretrained-BERT)
+* [https://github.com/allenai/allennlp](https://github.com/allenai/allennlp)
+* [https://github.com/pytorch/fairseq](https://github.com/pytorch/fairseq)
+
+
 ## References
 
 - __(Dai et al., 2019)__ Zihang Dai, Zhilin Yang, Yiming Yang, Jaime G. Carbonell, Quoc V. Le, and Ruslan Salakhutdi. _Transformer-xl: Attentive language models beyond a fixed-length context_. CoRR, abs/1901.02860.
@@ -184,7 +198,6 @@ python lama/get_contextual_embeddings.py \
 
 - __(Radford et al., 2018)__ Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. 2018. _Improving language understanding by generative pre-training_.
 
-- __(Dauphin et al., 2017)__ Yann N. Dauphin, Angela Fan, Michael Auli, and David Grangier. 2017. _Language modeling with gated convolutional networks_. ICML 2017
 
 ## Licence
 
