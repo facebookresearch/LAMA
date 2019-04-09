@@ -1,6 +1,6 @@
 Cython==0.29.2
 numpy==1.15.1
-torch==0.4.1
+torch==1.0.1
 pytorch-pretrained-bert==0.6.1
 allennlp==0.7.1
 spacy==2.0.18
