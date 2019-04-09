@@ -181,7 +181,7 @@ python lama/get_contextual_embeddings.py \
 ```
 
 
-## Acknowledgement
+## Acknowledgements
 
 * [https://github.com/huggingface/pytorch-pretrained-BERT](https://github.com/huggingface/pytorch-pretrained-BERT)
 * [https://github.com/allenai/allennlp](https://github.com/allenai/allennlp)
