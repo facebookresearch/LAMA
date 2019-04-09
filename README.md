@@ -77,7 +77,7 @@ conda create -n lama36 python=3.6 && conda activate lama36
 
 Clone the repo
 ```bash
-git clone git@github.com:fairinternal/LAMA.git && cd LAMA
+git clone git@github.com:facebookresearch/LAMA.git && cd LAMA
 ```
 Install as an editable package:
 ```bash
