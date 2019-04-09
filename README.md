@@ -185,3 +185,7 @@ python lama/get_contextual_embeddings.py \
 - __(Radford et al., 2018)__ Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. 2018. _Improving language understanding by generative pre-training_.
 
 - __(Dauphin et al., 2017)__ Yann N. Dauphin, Angela Fan, Michael Auli, and David Grangier. 2017. _Language modeling with gated convolutional networks_. ICML 2017
+
+## Licence
+
+LAMA is licensed under the CC-BY-NC 4.0 license. The text of the license can be found [here](LICENSE).
