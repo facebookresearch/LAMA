@@ -144,8 +144,7 @@ BERT pretrained models can be loaded both: (i) passing the name of the model and
 
 options:
 * __--text/--t__ : text to compute the generation for
-* __--i__ : interactive mode 
-<br>
+* __--i__ : interactive mode <br>
 one of the two is required
 
 example considering both BERT and ELMo:
