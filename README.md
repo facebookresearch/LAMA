@@ -1,7 +1,7 @@
 # LAMA: LAnguage Model Analysis
 <img align="middle" src="img/logo.png" height="256" alt="LAMA">
 
-LAMA is nothing more that a set of connectors to pre-trained language models. <br>
+LAMA is a set of connectors to pre-trained language models. <br>
 LAMA exposes a transparent and unique interface to use:
 
 - Transformer-XL (Dai et al., 2019)
