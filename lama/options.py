@@ -78,6 +78,7 @@ def __add_elmo_args(parser):
     group.add_argument('--elmo-model-dir', '--emd', dest='elmo_model_dir', help='directory that contains the ELMo pre-trained model and the vocabulary')
     group.add_argument('--elmo-model-name', '--emn', dest='elmo_model_name', default='elmo_2x4096_512_2048cnn_2xhighway', help="name of the ELMo pre-trained model (default = 'elmo_2x4096_512_2048cnn_2xhighway')")
     group.add_argument('--elmo-vocab-name', '--evn', dest='elmo_vocab_name', default='vocab-2016-09-10.txt', help="name of vocabulary used to pre-train the ELMo model (default = 'vocab-2016-09-10.txt')")
+    group.add_argument('--elmo-warm-up-cycles', dest='elmo_warm_up_cycles', type=int, default=5, help='ELMo warm up cycles')
     return group
 
 

@@ -53,6 +53,8 @@ class Elmo(Base_Connector):
         self.__init_top_payer(softmax_file = self.softmax_file)
 
         self.unk_index = self.inverse_vocab[ELMO_UNK]
+        
+        self.warm_up_cycles = args.elmo_warm_up_cycles
 
     def __init_vocab(self, dict_file):
         with open(dict_file, "r") as f:
@@ -119,6 +121,7 @@ class Elmo(Base_Connector):
 
     def get_batch_generation(self, sentences_list, logger= None,
                              try_cuda=True):
+        
         if not sentences_list:
             return None
         if try_cuda:
@@ -146,7 +149,15 @@ class Elmo(Base_Connector):
         batch_size = character_ids.shape[0]
 
         with torch.no_grad():
-            bilm_output = self.elmo_lstm(character_ids.to(self._model_device))
+            
+            bilm_output = None
+            for _ in range(self.warm_up_cycles):
+                '''After loading the pre-trained model, the first few batches will be negatively 
+                impacted until the biLM can reset its internal states. 
+                You may want to run a few batches through the model to warm up the states before making 
+                predictions (although we have not worried about this issue in practice).'''
+                bilm_output = self.elmo_lstm(character_ids.to(self._model_device))
+            
             elmo_activations = bilm_output['activations'][-1].cpu() # last layer
 
             forward_sequence_output,backward_sequence_output = torch.split(elmo_activations, int(self.hidden_size), dim=-1)
