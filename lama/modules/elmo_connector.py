@@ -50,7 +50,7 @@ class Elmo(Base_Connector):
 
         # 3. Top Layer
         # use pre-trained top layer
-        self.__init_top_payer(softmax_file = self.softmax_file)
+        self.__init_top_layer(softmax_file = self.softmax_file)
 
         self.unk_index = self.inverse_vocab[ELMO_UNK]
         
@@ -62,7 +62,7 @@ class Elmo(Base_Connector):
         self.vocab = [x.strip() for x in lines]
         self._init_inverse_vocab()
 
-    def __init_top_payer(self, softmax_file = None):
+    def __init_top_layer(self, softmax_file = None):
         with h5py.File(softmax_file, 'r') as fin:
             output_weights = fin['softmax']['W'][...]
             output_bias = fin['softmax']['b'][...]
@@ -82,16 +82,16 @@ class Elmo(Base_Connector):
 
     def optimize_top_layer(self, vocab_subset):
 
-        for symbol in SPECIAL_SYMBOLS:
-            if symbol in self.vocab and symbol not in vocab_subset:
-                vocab_subset.append(symbol)
+        # for symbol in SPECIAL_SYMBOLS:
+        #     if symbol in self.vocab and symbol not in vocab_subset:
+        #         vocab_subset.append(symbol)
 
         # use given vocabulary for ELMo
-        self.vocab = [ x for x in vocab_subset if x in self.inverse_vocab ]
+        self.vocab = [ x for x in vocab_subset if x in self.inverse_vocab and x not in SPECIAL_SYMBOLS ]
 
-        self.__init_top_payer(softmax_file = self.softmax_file)
+        self.__init_top_layer(softmax_file = self.softmax_file)
 
-        # the inverse vocab initialization should be done after __init_top_payer
+        # the inverse vocab initialization should be done after __init_top_layer
         self._init_inverse_vocab()
 
     def __get_tokend_ids(self, text):
