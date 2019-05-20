@@ -150,13 +150,14 @@ class Elmo(Base_Connector):
 
         with torch.no_grad():
             
+            bilm_input = character_ids.to(self._model_device)
             bilm_output = None
             for _ in range(self.warm_up_cycles):
                 '''After loading the pre-trained model, the first few batches will be negatively 
                 impacted until the biLM can reset its internal states. 
                 You may want to run a few batches through the model to warm up the states before making 
                 predictions (although we have not worried about this issue in practice).'''
-                bilm_output = self.elmo_lstm(character_ids.to(self._model_device))
+                bilm_output = self.elmo_lstm(bilm_input)
             
             elmo_activations = bilm_output['activations'][-1].cpu() # last layer
 
