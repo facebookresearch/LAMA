@@ -91,7 +91,7 @@ class Elmo(Base_Connector):
 
         self.__init_top_layer(softmax_file = self.softmax_file)
         
-        self.vocab = [ x for x in vocab_subset if x in self.inverse_vocab]
+        self.vocab.append(ELMO_UNK)
 
         # the inverse vocab initialization should be done after __init_top_layer
         self._init_inverse_vocab()
