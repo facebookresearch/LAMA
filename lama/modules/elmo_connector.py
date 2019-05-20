@@ -82,19 +82,14 @@ class Elmo(Base_Connector):
 
     def optimize_top_layer(self, vocab_subset):
 
-        
-
-        # use given vocabulary for ELMo
-        self.vocab = [ x for x in vocab_subset if x in self.inverse_vocab and x not in SPECIAL_SYMBOLS ]
-
-        self.__init_top_layer(softmax_file = self.softmax_file)
-        
         for symbol in SPECIAL_SYMBOLS:
             if symbol in self.vocab and symbol not in vocab_subset:
                 vocab_subset.append(symbol)
-        
+
         # use given vocabulary for ELMo
-        self.vocab = [ x for x in vocab_subset if x in self.inverse_vocab]
+        self.vocab = [ x for x in vocab_subset if x in self.inverse_vocab and x != ELMO_UNK ]
+
+        self.__init_top_layer(softmax_file = self.softmax_file)
 
         # the inverse vocab initialization should be done after __init_top_layer
         self._init_inverse_vocab()
