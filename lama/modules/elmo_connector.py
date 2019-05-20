@@ -91,12 +91,9 @@ class Elmo(Base_Connector):
 
         self.__init_top_layer(softmax_file = self.softmax_file)
         
-        #self.vocab.append(ELMO_UNK)
-
         # the inverse vocab initialization should be done after __init_top_layer
         self._init_inverse_vocab()
         
-        #self.vocab.pop()
 
     def __get_tokend_ids(self, text):
         token_ids = [self.inverse_vocab[ELMO_START_SENTENCE]]
