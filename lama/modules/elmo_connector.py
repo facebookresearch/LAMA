@@ -55,6 +55,8 @@ class Elmo(Base_Connector):
         self.unk_index = self.inverse_vocab[ELMO_UNK]
         
         self.warm_up_cycles = args.elmo_warm_up_cycles
+        
+        self.len_vocab = len(self.vocab)
 
     def __init_vocab(self, dict_file):
         with open(dict_file, "r") as f:
@@ -66,8 +68,8 @@ class Elmo(Base_Connector):
         with h5py.File(softmax_file, 'r') as fin:
             output_weights = fin['softmax']['W'][...]
             output_bias = fin['softmax']['b'][...]
-        if (output_weights.shape[0] != len(self.vocab)):
-            print("output_weights.shape[0] : {} != len(self.vocab) : {}".format(output_weights.shape[0],len(self.vocab)))
+        if (output_weights.shape[0] != self.len_vocab):
+            print("output_weights.shape[0] : {} != self.len_vocab : {}".format(output_weights.shape[0],self.len_vocab))
             indices = []
             for word in self.vocab:
                 if word in self.inverse_vocab:
@@ -76,7 +78,7 @@ class Elmo(Base_Connector):
                     raise ValueError("word: {} not in original ELMo vocab".format(word))
             output_weights = np.take(output_weights, indices, axis=0)
             output_bias = np.take(output_bias, indices, axis=0)
-        self.output_layer = torch.nn.Linear(self.hidden_size, len(self.vocab), bias=True)
+        self.output_layer = torch.nn.Linear(self.hidden_size, self.len_vocab, bias=True)
         self.output_layer.weight = torch.nn.Parameter(torch.from_numpy(output_weights))
         self.output_layer.bias = torch.nn.Parameter(torch.from_numpy(output_bias))
 
@@ -88,9 +90,11 @@ class Elmo(Base_Connector):
 
         # use given vocabulary for ELMo
         self.vocab = [ x for x in vocab_subset if x in self.inverse_vocab and x != ELMO_UNK ]
+        self.len_vocab = len(self.vocab)
 
         self.__init_top_layer(softmax_file = self.softmax_file)
         
+        # hack to avoid predicting UNK
         self.vocab.append(ELMO_UNK)
 
         # the inverse vocab initialization should be done after __init_top_layer
@@ -172,7 +176,7 @@ class Elmo(Base_Connector):
             log_probs_forward = log_softmax(logits_forward)
             log_probs_backward = log_softmax(logits_backward)
 
-        pad = torch.zeros([batch_size, 1, len(self.vocab)], dtype=torch.float)
+        pad = torch.zeros([batch_size, 1, self.len_vocab], dtype=torch.float)
 
         log_probs_forward_splitted = torch.split(log_probs_forward, 1, dim=1)
         log_probs_backward_splitted = torch.split(log_probs_backward, 1, dim=1)
