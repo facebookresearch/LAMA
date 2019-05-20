@@ -87,11 +87,9 @@ class Elmo(Base_Connector):
                 vocab_subset.append(symbol)
 
         # use given vocabulary for ELMo
-        self.vocab = [ x for x in vocab_subset if x in self.inverse_vocab and x != ELMO_UNK ]
+        self.vocab = [ x for x in vocab_subset if x in self.inverse_vocab ]
 
         self.__init_top_layer(softmax_file = self.softmax_file)
-        
-        self.vocab.append(ELMO_UNK)
 
         # the inverse vocab initialization should be done after __init_top_layer
         self._init_inverse_vocab()
@@ -172,8 +170,7 @@ class Elmo(Base_Connector):
             log_probs_forward = log_softmax(logits_forward)
             log_probs_backward = log_softmax(logits_backward)
 
-            
-        pad = torch.zeros([batch_size, 1, len(self.vocab)-1], dtype=torch.float) # -1 to avoid predicting UNK
+        pad = torch.zeros([batch_size, 1, len(self.vocab)], dtype=torch.float)
 
         log_probs_forward_splitted = torch.split(log_probs_forward, 1, dim=1)
         log_probs_backward_splitted = torch.split(log_probs_backward, 1, dim=1)
