@@ -56,12 +56,13 @@ class Elmo(Base_Connector):
         
         self.warm_up_cycles = args.elmo_warm_up_cycles
         
-        self.len_vocab = len(self.vocab)
+        
 
     def __init_vocab(self, dict_file):
         with open(dict_file, "r") as f:
             lines = f.readlines()
         self.vocab = [x.strip() for x in lines]
+        self.len_vocab = len(self.vocab)
         self._init_inverse_vocab()
 
     def __init_top_layer(self, softmax_file = None):
