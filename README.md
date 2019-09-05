@@ -17,7 +17,7 @@ Actually, LAMA is also a beautiful animal.
 
 To reproduce our results:
 
-### 1. Create conda environment and intall requirements
+### 1. Create conda environment and install requirements
 
 (optional) It might be a good idea to use a separate conda environment. It can be created by running:
 ```
