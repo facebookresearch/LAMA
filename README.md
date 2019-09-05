@@ -1,7 +1,8 @@
 # LAMA: LAnguage Model Analysis
 <img align="middle" src="img/logo.png" height="256" alt="LAMA">
 
-LAMA ia a probe for analyzing the factual and commonsense knowledge contained in pretrained language models
+LAMA ia a probe for analyzing the factual and commonsense knowledge contained in pretrained language models. <br>
+### Data available at https://dl.fbaipublicfiles.com/LAMA/data.zip <br>
 LAMA contains a set of connectors to pretrained language models. <br>
 LAMA exposes a transparent and unique interface to use:
 
@@ -42,6 +43,7 @@ Install spacy model
 python3 -m spacy download en
 ```
 
+Download the models
 ```bash
 chmod +x download_models.sh
 ./download_models.sh
@@ -57,7 +59,7 @@ If you are interested in a particular model please edit the script.
 python scripts/run_experiments.py
 ```
 
-results will be logged in _output/_ in  _last_results.csv_.
+results will be logged in _output/_ and  _last_results.csv_.
 
 ### Reference:
 
