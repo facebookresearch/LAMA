@@ -1,7 +1,8 @@
 # LAMA: LAnguage Model Analysis
 <img align="middle" src="img/logo.png" height="256" alt="LAMA">
 
-LAMA is a set of connectors to pre-trained language models. <br>
+LAMA ia a probe for analyzing the factual and commonsense knowledge contained in pretrained language models
+LAMA contains a set of connectors to pretrained language models. <br>
 LAMA exposes a transparent and unique interface to use:
 
 - Transformer-XL (Dai et al., 2019)
@@ -11,7 +12,68 @@ LAMA exposes a transparent and unique interface to use:
 
 Actually, LAMA is also a beautiful animal.
 
-## What can you do with LAMA?
+## The LAMA probe
+
+To reproduce our results:
+
+### 1. Create conda environment and intall requirements
+
+(optional) It might be a good idea to use a separate conda environment. It can be created by running:
+```
+conda create -n lama37 python=3.7 && conda activate lama37
+pip install -r requirements.txt
+```
+
+### 2. Download the data
+
+```bash
+wget https://dl.fbaipublicfiles.com/LAMA/data.zip
+unzip data.zip
+rm data.zip
+python scripts/run_experiments.py
+```
+
+### 3. Download the models
+
+#### DISCLAIMER: ~55 GB on disk
+
+Install spacy model
+```bash
+python3 -m spacy download en
+```
+
+```bash
+chmod +x download_models.sh
+./download_models.sh
+```
+
+The script will create and populate a _pre-trained_language_models_ folder.
+If you are interested in a particular model please edit the script.
+
+
+### 3. Run the experiemnts
+
+```bash
+python scripts/run_experiments.py
+```
+
+results will be logged in _output/_ in  _last_results.csv_.
+
+### Reference:
+
+```latex
+@inproceedings{petroni2019language,
+  title={Language Models as Knowledge Bases?},
+  author={F. Petroni, T. Rocktäschel, A. H. Miller, P. Lewis, A. Bakhtin, Y. Wu and S. Riedel},
+  booktitle={To Appear in: Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing (EMNLP), 2019},
+  year={2019}
+}
+```
+
+Preprint version: https://arxiv.org/abs/1909.01066
+
+
+## What else can you do with LAMA?
 
 ### 1. Encode a list of sentences
 and use the vectors in your downstream task!
@@ -74,12 +136,7 @@ python lama/eval_generation.py  \
 --t "The theory of relativity was developed by [MASK] ."
 ```
 
-## Dependencies
-
-(optional) It might be a good idea to use a separate conda environment. It can be created by running:
-```
-conda create -n lama36 python=3.6 && conda activate lama36
-```
+## Install LAMA with pip
 
 Clone the repo
 ```bash
@@ -94,21 +151,6 @@ If you get an error in mac os x, please try running this instead
 ```bash
 CFLAGS="-Wno-deprecated-declarations -std=c++11 -stdlib=libc++" pip install --editable .
 ```
-
-Finally, install spacy model
-```bash
-python3 -m spacy download en
-```
-
-## Download the models
-
-### DISCLAIMER: ~55 GB on disk
-```bash
-chmod +x download_models.sh
-./download_models.sh
-```
-The script will create and populate a _pre-trained_language_models_ folder.
-If you are interested in a particular model please edit the script.
 
 
 ## Language Model(s) options

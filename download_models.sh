@@ -30,7 +30,7 @@ if [[ ! -f gpt/openai-gpt/config.json ]]; then
 fi
 
 echo "BERT BASE LOWERCASED"
-if [[ ! -d bert/bert-base-uncased ]]; then
+if [[ ! -d bert/uncased_L-12_H-768_A-12 ]]; then
   mkdir -p 'bert'
   cd bert
   wget -c "https://storage.googleapis.com/bert_models/2018_10_18/uncased_L-12_H-768_A-12.zip"
@@ -45,7 +45,7 @@ if [[ ! -d bert/bert-base-uncased ]]; then
 fi
 
 echo "BERT LARGE LOWERCASED"
-if [[ ! -d bert/bert-large-uncased ]]; then
+if [[ ! -d bert/uncased_L-24_H-1024_A-16 ]]; then
   mkdir -p 'bert'
   cd bert
   wget -c "https://storage.googleapis.com/bert_models/2018_10_18/uncased_L-24_H-1024_A-16.zip"
@@ -107,7 +107,7 @@ fi
 #  wget -c "https://s3.amazonaws.com/fairseq-py/models/wiki103_fconv_lm.tar.bz2"
 
 echo "BERT BASE CASED"
-if [[ ! -d bert/bert-base-cased ]]; then
+if [[ ! -d bert/cased_L-12_H-768_A-12 ]]; then
   mkdir -p 'bert'
   cd bert
   wget -c "https://storage.googleapis.com/bert_models/2018_10_18/cased_L-12_H-768_A-12.zip"
@@ -122,7 +122,7 @@ if [[ ! -d bert/bert-base-cased ]]; then
 fi
 
 echo "BERT LARGE CASED"
-if [[ ! -d bert/bert-large-cased ]]; then
+if [[ ! -d bert/cased_L-24_H-1024_A-16 ]]; then
   mkdir -p 'bert'
   cd bert
   wget -c "https://storage.googleapis.com/bert_models/2018_10_18/cased_L-24_H-1024_A-16.zip"

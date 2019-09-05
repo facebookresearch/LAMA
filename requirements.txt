@@ -2,8 +2,8 @@ Cython==0.29.2
 numpy==1.15.1
 torch==1.0.1
 pytorch-pretrained-bert==0.6.1
-allennlp==0.7.1
-spacy==2.0.18
+allennlp==0.8.5
+spacy==2.1.8
 tqdm==4.26.0
 termcolor==1.1.0
 pandas==0.23.4
