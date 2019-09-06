@@ -1,11 +1,9 @@
-#!/usr/bin/env python3 -u
-# Copyright (c) 2018-present, Facebook, Inc.
+# Copyright (c) Facebook, Inc. and its affiliates.
 # All rights reserved.
 #
-# This source code is licensed under the license found in the LICENSE file in
-# the root directory of this source tree. An additional grant of patent rights
-# can be found in the PATENTS file in the same directory.
-
+# This source code is licensed under the license found in the
+# LICENSE file in the root directory of this source tree.
+#
 from lama.modules import build_model_by_name
 import lama.utils as utils
 from lama.utils import print_sentence_predictions, load_vocab
