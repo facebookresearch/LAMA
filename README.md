@@ -13,6 +13,21 @@ LAMA exposes a transparent and unique interface to use:
 
 Actually, LAMA is also a beautiful animal.
 
+## Reference:
+
+The LAMA probe is described in the following paper:
+
+```latex
+@inproceedings{petroni2019language,
+  title={Language Models as Knowledge Bases?},
+  author={F. Petroni, T. Rockt{\"{a}}schel, A. H. Miller, P. Lewis, A. Bakhtin, Y. Wu and S. Riedel},
+  booktitle={To Appear in: Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing (EMNLP), 2019},
+  year={2019}
+}
+```
+
+Preprint version: https://arxiv.org/abs/1909.01066
+
 ## The LAMA probe
 
 To reproduce our results:
@@ -60,19 +75,6 @@ python scripts/run_experiments.py
 ```
 
 results will be logged in _output/_ and  _last_results.csv_.
-
-### Reference:
-
-```latex
-@inproceedings{petroni2019language,
-  title={Language Models as Knowledge Bases?},
-  author={F. Petroni, T. Rocktäschel, A. H. Miller, P. Lewis, A. Bakhtin, Y. Wu and S. Riedel},
-  booktitle={To Appear in: Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing (EMNLP), 2019},
-  year={2019}
-}
-```
-
-Preprint version: https://arxiv.org/abs/1909.01066
 
 
 ## What else can you do with LAMA?
