@@ -30,7 +30,7 @@ if [[ ! -f gpt/openai-gpt/config.json ]]; then
 fi
 
 echo "BERT BASE LOWERCASED"
-if [[ ! -d bert/uncased_L-12_H-768_A-12 ]]; then
+if [[ ! -f bert/uncased_L-12_H-768_A-12/bert_config.json ]]; then
   mkdir -p 'bert'
   cd bert
   wget -c "https://storage.googleapis.com/bert_models/2018_10_18/uncased_L-12_H-768_A-12.zip"
@@ -45,7 +45,7 @@ if [[ ! -d bert/uncased_L-12_H-768_A-12 ]]; then
 fi
 
 echo "BERT LARGE LOWERCASED"
-if [[ ! -d bert/uncased_L-24_H-1024_A-16 ]]; then
+if [[ ! -f bert/uncased_L-24_H-1024_A-16/bert_config.json ]]; then
   mkdir -p 'bert'
   cd bert
   wget -c "https://storage.googleapis.com/bert_models/2018_10_18/uncased_L-24_H-1024_A-16.zip"
@@ -75,7 +75,7 @@ if [[ ! -f 'transformerxl/transfo-xl-wt103/config.json' ]]; then
 fi
 
 echo "ELMO ORIGINAL 5.5B"
-if [[ ! -d elmo/original5.5B ]]; then
+if [[ ! -f elmo/original5.5B/vocab-enwiki-news-500000.txt ]]; then
   mkdir -p 'elmo'
   cd elmo
   mkdir -p 'original5.5B'
@@ -88,7 +88,7 @@ if [[ ! -d elmo/original5.5B ]]; then
 fi
 
 echo "ELMO ORIGINAL"
-if [[ ! -d elmo/original ]]; then
+if [[ ! -f elmo/original/vocab-2016-09-10.txt ]]; then
   mkdir -p 'elmo'
   cd elmo
   mkdir -p 'original'
@@ -107,7 +107,7 @@ fi
 #  wget -c "https://s3.amazonaws.com/fairseq-py/models/wiki103_fconv_lm.tar.bz2"
 
 echo "BERT BASE CASED"
-if [[ ! -d bert/cased_L-12_H-768_A-12 ]]; then
+if [[ ! -f bert/cased_L-12_H-768_A-12/bert_config.json ]]; then
   mkdir -p 'bert'
   cd bert
   wget -c "https://storage.googleapis.com/bert_models/2018_10_18/cased_L-12_H-768_A-12.zip"
@@ -122,7 +122,7 @@ if [[ ! -d bert/cased_L-12_H-768_A-12 ]]; then
 fi
 
 echo "BERT LARGE CASED"
-if [[ ! -d bert/cased_L-24_H-1024_A-16 ]]; then
+if [[ ! -f bert/cased_L-24_H-1024_A-16/bert_config.json ]]; then
   mkdir -p 'bert'
   cd bert
   wget -c "https://storage.googleapis.com/bert_models/2018_10_18/cased_L-24_H-1024_A-16.zip"
