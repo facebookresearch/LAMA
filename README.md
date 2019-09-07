@@ -46,7 +46,6 @@ pip install -r requirements.txt
 wget https://dl.fbaipublicfiles.com/LAMA/data.zip
 unzip data.zip
 rm data.zip
-python scripts/run_experiments.py
 ```
 
 ### 3. Download the models
