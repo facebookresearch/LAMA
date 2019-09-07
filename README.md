@@ -226,6 +226,12 @@ python lama/get_contextual_embeddings.py \
 ```
 
 
+## Troubleshooting
+
+If the module cannot be found, preface the python command with `PYTHONPATH=.`
+
+If the experiments fail on GPU memory allocation, try reducing batch size.
+
 ## Acknowledgements
 
 * [https://github.com/huggingface/pytorch-pretrained-BERT](https://github.com/huggingface/pytorch-pretrained-BERT)
