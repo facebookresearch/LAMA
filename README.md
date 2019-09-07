@@ -67,7 +67,7 @@ The script will create and populate a _pre-trained_language_models_ folder.
 If you are interested in a particular model please edit the script.
 
 
-### 3. Run the experiemnts
+### 4. Run the experiemnts
 
 ```bash
 python scripts/run_experiments.py
