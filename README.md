@@ -17,7 +17,7 @@ Actually, LAMA is also a beautiful animal.
 
 The LAMA probe is described in the following paper:
 
-```latex
+```bibtex
 @inproceedings{petroni2019language,
   title={Language Models as Knowledge Bases?},
   author={F. Petroni, T. Rockt{\"{a}}schel, A. H. Miller, P. Lewis, A. Bakhtin, Y. Wu and S. Riedel},
