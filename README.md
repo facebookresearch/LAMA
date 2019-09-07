@@ -36,7 +36,7 @@ To reproduce our results:
 
 (optional) It might be a good idea to use a separate conda environment. It can be created by running:
 ```
-conda create -n lama37 python=3.7 && conda activate lama37
+conda create -n lama37 -y python=3.7 && conda activate lama37
 pip install -r requirements.txt
 ```
 
