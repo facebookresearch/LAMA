@@ -36,7 +36,7 @@ To reproduce our results:
 
 (optional) It might be a good idea to use a separate conda environment. It can be created by running:
 ```
-conda create -n lama37 python=3.7 && conda activate lama37
+conda create -n lama37 -y python=3.7 && conda activate lama37
 pip install -r requirements.txt
 ```
 
@@ -46,7 +46,6 @@ pip install -r requirements.txt
 wget https://dl.fbaipublicfiles.com/LAMA/data.zip
 unzip data.zip
 rm data.zip
-python scripts/run_experiments.py
 ```
 
 ### 3. Download the models
@@ -68,7 +67,7 @@ The script will create and populate a _pre-trained_language_models_ folder.
 If you are interested in a particular model please edit the script.
 
 
-### 3. Run the experiemnts
+### 4. Run the experiemnts
 
 ```bash
 python scripts/run_experiments.py
@@ -226,6 +225,12 @@ python lama/get_contextual_embeddings.py \
 --emd "pre-trained_language_models/elmo/original/"
 ```
 
+
+## Troubleshooting
+
+If the module cannot be found, preface the python command with `PYTHONPATH=.`
+
+If the experiments fail on GPU memory allocation, try reducing batch size.
 
 ## Acknowledgements
 
