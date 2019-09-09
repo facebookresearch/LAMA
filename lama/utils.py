@@ -97,9 +97,7 @@ def print_sentence_predictions(log_probs, token_ids, vocab,
 
     ranking_position = (index_max_probs == query.numpy()).nonzero()
 
-    rank_dict = {}
-    for x in ranking_position:
-        rank_dict[x[0]] = x[1]
+    rank_dict = dict(zip(*ranking_position))
 
     # get positional score of the correct token
     token_probs = log_probs.gather(
