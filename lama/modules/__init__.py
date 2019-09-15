@@ -6,9 +6,9 @@
 #
 from .bert_connector import Bert
 from .elmo_connector import Elmo
-from .fairseq_connector import Fairseq
 from .gpt_connector import GPT
 from .transformerxl_connector import TransformerXL
+from .roberta_connector import Roberta
 
 
 def build_model_by_name(lm, args, verbose=True):
@@ -18,11 +18,11 @@ def build_model_by_name(lm, args, verbose=True):
     model's initializator.
     """
     MODEL_NAME_TO_CLASS = dict(
-        fairseq=Fairseq,
         elmo=Elmo,
         bert=Bert,
         gpt=GPT,
         transformerxl=TransformerXL,
+        roberta=Roberta
     )
     if lm not in MODEL_NAME_TO_CLASS:
         raise ValueError("Unrecognized Language Model: %s." % lm)

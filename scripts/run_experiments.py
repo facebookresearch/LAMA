@@ -17,16 +17,6 @@ from shutil import copyfile
 from collections import defaultdict
 
 LMs = [
-    # {
-    #     "lm": "fairseq",
-    #     "label": "fairseq",
-    #     "models_names": ["fairseq"],
-    #     "fairseq_model_name": 'wiki103.pt',
-    #     "task": 'language_modeling',
-    #     "cpu": True,
-    #     "output_dictionary_size": -1,
-    #     "data": "pre-trained_language_models/fairseq/wiki103_fconv_lm/"
-    # },
     {
         "lm":
         "transformerxl",

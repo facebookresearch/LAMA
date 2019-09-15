@@ -168,16 +168,19 @@ BERT pretrained models can be loaded both: (i) passing the name of the model and
 * __--bert-model-name/--bmn__ : name of the huggingface cached versions of the BERT pre-trained model (default = 'bert-base-cased')
 * __--bert-vocab-name/--bvn__ : name of vocabulary used to pre-train the BERT model (default = 'vocab.txt')
 
+
+### RoBERTa
+
+* __--roberta-model-dir/--rmd__ : directory that contains the RoBERTa pre-trained model and the vocabulary (__REQUIRED__)
+* __--roberta-model-name/--rmn__ : name of the RoBERTa pre-trained model (default = 'model.pt')
+* __--roberta-vocab-name/--rvn__ : name of vocabulary used to pre-train the RoBERTa model (default = 'dict.txt')
+
+
 ### ELMo
 
 * __--elmo-model-dir/--emd__ : directory that contains the ELMo pre-trained model and the vocabulary (__REQUIRED__)
 * __--elmo-model-name/--emn__ : name of the ELMo pre-trained model (default = 'elmo_2x4096_512_2048cnn_2xhighway')
 * __--elmo-vocab-name/--evn__ : name of vocabulary used to pre-train the ELMo model (default = 'vocab-2016-09-10.txt')
-
-### fairseq
-
-* __--fairseq-model-dir/--fmd__ : directory that contains the fairseq pre-trained model and the vocabulary (__REQUIRED__)
-* __--fairseq-model-name/--fmn__ : name of the fairseq pre-trained model (default = 'wiki103.pt')
 
 
 ### Transformer-XL

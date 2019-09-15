@@ -100,11 +100,6 @@ if [[ ! -f elmo/original/vocab-2016-09-10.txt ]]; then
   cd ../../
 fi
 
-#echo "FAIRSEQ WIKI103"
-#if [[ ! -d fairseq/wiki103_fconv_lm ]]; then
-#  mkdir -p fairseq
-#  cd fairseq
-#  wget -c "https://s3.amazonaws.com/fairseq-py/models/wiki103_fconv_lm.tar.bz2"
 
 echo "BERT BASE CASED"
 if [[ ! -f bert/cased_L-12_H-768_A-12/bert_config.json ]]; then
