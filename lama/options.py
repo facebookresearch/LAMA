@@ -36,6 +36,13 @@ def get_general_parser():
         action="store_true",
         help="perform the evaluation interactively",
     )
+    parser.add_argument(
+        "--max-sentence-length",
+        dest="max_sentence_length",
+        type=int,
+        default=100,
+        help="max sentence lenght",
+    )
     __add_bert_args(parser)
     __add_elmo_args(parser)
     __add_gpt_args(parser)
@@ -81,13 +88,6 @@ def get_eval_KB_completion_parser():
     )
     parser.add_argument(
         "--batch-size", dest="batch_size", type=int, default=32, help="batch size"
-    )
-    parser.add_argument(
-        "--max-sentence-length",
-        dest="max_sentence_length",
-        type=int,
-        default=100,
-        help="max sentence lenght",
     )
     parser.add_argument(
         "--lowercase",
