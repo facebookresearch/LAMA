@@ -22,12 +22,21 @@ The LAMA probe is described in the following paper:
 @inproceedings{petroni2019language,
   title={Language Models as Knowledge Bases?},
   author={F. Petroni, T. Rockt{\"{a}}schel, A. H. Miller, P. Lewis, A. Bakhtin, Y. Wu and S. Riedel},
-  booktitle={To Appear in: Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing (EMNLP), 2019},
+  booktitle={In: Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing (EMNLP), 2019},
   year={2019}
 }
 ```
 
-Preprint version: https://arxiv.org/abs/1909.01066
+This repository also provides a script (`scripts/create_lama_uhn.py`) to create the data used in:
+
+```bibtex
+@article{poerner2019bert,
+ title={BERT is Not a Knowledge Base (Yet): Factual Knowledge vs. Name-Based Reasoning in Unsupervised QA},
+  author={Poerner, Nina and Waltinger, Ulli and Sch{\"u}tze, Hinrich},
+  journal={arXiv preprint arXiv:1911.03681},
+  year={2019}
+}
+```
 
 ## The LAMA probe
 
