@@ -74,6 +74,9 @@ python scripts/run_experiments.py
 
 results will be logged in _output/_ and  _last_results.csv_.
 
+### LAMA-UHN
+
+This repository also provides a script (`scripts/create_lama_uhn.py`) to create the data used in (Poerner et al., 2019).
 
 ## What else can you do with LAMA?
 
@@ -137,11 +140,6 @@ python lama/eval_generation.py  \
 --lm "bert"  \
 --t "The theory of relativity was developed by [MASK] ."
 ```
-
-
-### 3. LAMA-UHN
-
-This repository also provides a script (`scripts/create_lama_uhn.py`) to create the data used in (Poerner et al., 2019).
 
 
 ## Install LAMA with pip
