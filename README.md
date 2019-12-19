@@ -27,17 +27,6 @@ The LAMA probe is described in the following paper:
 }
 ```
 
-This repository also provides a script (`scripts/create_lama_uhn.py`) to create the data used in:
-
-```bibtex
-@article{poerner2019bert,
- title={BERT is Not a Knowledge Base (Yet): Factual Knowledge vs. Name-Based Reasoning in Unsupervised QA},
-  author={Poerner, Nina and Waltinger, Ulli and Sch{\"u}tze, Hinrich},
-  journal={arXiv preprint arXiv:1911.03681},
-  year={2019}
-}
-```
-
 ## The LAMA probe
 
 To reproduce our results:
@@ -149,6 +138,10 @@ python lama/eval_generation.py  \
 --t "The theory of relativity was developed by [MASK] ."
 ```
 
+### 
+
+This repository also provides a script (`scripts/create_lama_uhn.py`) to create the data used in:
+
 ## Install LAMA with pip
 
 Clone the repo
@@ -252,7 +245,9 @@ If the experiments fail on GPU memory allocation, try reducing batch size.
 * [https://github.com/pytorch/fairseq](https://github.com/pytorch/fairseq)
 
 
-## References
+## Other References
+
+- __(Poerner et al., 2019)__ Nina Poerner, Ulli Waltinger, and Hinrich Sch{\"u}tze.BERT is Not a Knowledge Base (Yet): Factual Knowledge vs. Name-Based Reasoning in Unsupervised QA. arXiv preprint arXiv:1911.03681, 2019.
 
 - __(Dai et al., 2019)__ Zihang Dai, Zhilin Yang, Yiming Yang, Jaime G. Carbonell, Quoc V. Le, and Ruslan Salakhutdi. _Transformer-xl: Attentive language models beyond a fixed-length context_. CoRR, abs/1901.02860.
 
