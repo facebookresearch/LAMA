@@ -138,9 +138,11 @@ python lama/eval_generation.py  \
 --t "The theory of relativity was developed by [MASK] ."
 ```
 
-### 
 
-This repository also provides a script (`scripts/create_lama_uhn.py`) to create the data used in:
+### 3. LAMA-UHN
+
+This repository also provides a script (`scripts/create_lama_uhn.py`) to create the data used in (Poerner et al., 2019).
+
 
 ## Install LAMA with pip
 
