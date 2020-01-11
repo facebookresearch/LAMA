@@ -77,7 +77,7 @@ def run_experiments(
         "models_names": ["bert"],
         "bert_model_name": "bert-large-cased",
         "bert_model_dir": "pre-trained_language_models/bert/cased_L-24_H-1024_A-16",
-    },
+    }, negation=False,
 ):
     model = None
     pp = pprint.PrettyPrinter(width=41, compact=True)
@@ -97,7 +97,7 @@ def run_experiments(
             "common_vocab_filename": "pre-trained_language_models/common_vocab_cased.txt",
             "template": "",
             "bert_vocab_name": "vocab.txt",
-            "batch_size": 32,
+            "batch_size": 16,
             "logdir": "output",
             "full_logdir": "output/results/{}/{}".format(
                 input_param["label"], relation["relation"]
@@ -106,10 +106,12 @@ def run_experiments(
             "max_sentence_length": 100,
             "threads": -1,
             "interactive": False,
+            "negation": negation
         }
 
         if "template" in relation:
             PARAMETERS["template"] = relation["template"]
+            PARAMETERS["template_negated"] = relation["template_negated"]
 
         PARAMETERS.update(input_param)
         print(PARAMETERS)
@@ -170,9 +172,12 @@ def get_TREx_parameters(data_path_pre="data/"):
 
 def get_GoogleRE_parameters():
     relations = [
-        {"relation": "place_of_birth", "template": "[X] was born in [Y] ."},
-        {"relation": "date_of_birth", "template": "[X] (born [Y])."},
-        {"relation": "place_of_death", "template": "[X] died in [Y] ."},
+        {"relation": "place_of_birth", "template": "[X] was born in [Y] .",
+         "template_negated": "[X] was not born in [Y] ."},
+        {"relation": "date_of_birth", "template": "[X] (born [Y]).",
+         "template_negated": "[X] (not born [Y])."},
+        {"relation": "place_of_death", "template": "[X] died in [Y] .",
+         "template_negated": "[X] did not die in [Y] ."},
     ]
     data_path_pre = "data/Google_RE/"
     data_path_post = "_test.jsonl"
@@ -196,16 +201,16 @@ def get_Squad_parameters(data_path_pre="data/"):
 def run_all_LMs(parameters):
     for ip in LMs:
         print(ip["label"])
-        run_experiments(*parameters, input_param=ip)
+        run_experiments(*parameters, input_param=ip, negation=True)
 
 
 if __name__ == "__main__":
 
-    print("1. Google-RE")    
+    print("1. Google-RE")
     parameters = get_GoogleRE_parameters()
     run_all_LMs(parameters)
 
-    print("2. T-REx")    
+    print("2. T-REx")
     parameters = get_TREx_parameters()
     run_all_LMs(parameters)
 
@@ -216,5 +221,3 @@ if __name__ == "__main__":
     print("4. SQuAD")
     parameters = get_Squad_parameters()
     run_all_LMs(parameters)
-
-    

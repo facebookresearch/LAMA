@@ -6,6 +6,8 @@
 #
 import torch
 import numpy as np
+import scipy
+
 
 
 def __print_top_k(value_max_probs, index_max_probs, vocab, mask_topk, index_list, max_printouts = 10):
@@ -100,3 +102,42 @@ def get_ranking(log_probs, masked_indices, vocab, label_index = None, index_list
     # print("PERPLEXITY: {}".format(experiment_result["PERPLEXITY"]))
 
     return MRR, P_AT_X, experiment_result, return_msg
+
+
+def __overlap_negation(index_max_probs_n, index_max_probs):
+    overlap = 0
+    if index_max_probs_n == index_max_probs:
+        overlap = 1
+    return overlap
+
+
+def metric_negation(log_probs, masked_indices, log_probs_n, masked_indices_n, vocab, index_list=None, topk = 1):
+
+    return_msg = ""
+    # if negated sentence present
+    if len(masked_indices_n) > 0:
+
+        # score only first mask
+        masked_indices = masked_indices[:1]
+        masked_index = masked_indices[0]
+        log_probs = log_probs[masked_index]
+        __value_max_probs, index_max_probs = torch.topk(input=log_probs,k=topk,dim=0)
+        index_max_probs = index_max_probs.numpy().astype(int)
+
+
+        masked_indices_n = masked_indices_n[:1]
+        masked_index_n = masked_indices_n[0]
+        log_probs_n = log_probs_n[masked_index_n]
+        __value_max_probs_n, index_max_probs_n = torch.topk(input=log_probs_n,k=topk,dim=0)
+        index_max_probs_n = index_max_probs_n.numpy().astype(int)
+
+        # overlap btw. affirmative and negated first ranked prediction: 0 or 1
+        overlap = __overlap_negation(index_max_probs_n[0], index_max_probs[0])
+        # rank corrl. btw. affirmative and negated predicted log_probs
+        spearmanr = scipy.stats.spearmanr(log_probs, log_probs_n)[0]
+
+    else:
+        overlap = np.nan
+        spearmanr = np.nan
+
+    return overlap, spearmanr, return_msg
