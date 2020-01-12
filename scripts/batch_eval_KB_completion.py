@@ -144,6 +144,7 @@ def batchify_negated(data, batch_size):
 
     return list_sentences_batches, msg
 
+
 def run_thread(arguments):
 
     msg = ""
@@ -177,11 +178,12 @@ def run_thread(arguments):
 
     return experiment_result, sample_MRR, sample_P, sample_perplexity, msg
 
+
 def run_thread_negated(arguments):
 
     msg = ""
 
-    overlap, spearmanr, return_msg = metrics.metric_negation(
+    overlap, spearman, return_msg = metrics.metric_negation(
         arguments["log_probs"],
         arguments["masked_indices"],
         arguments["log_probs_n"],
@@ -191,7 +193,7 @@ def run_thread_negated(arguments):
 
     msg += "\n" + return_msg
 
-    return overlap, spearmanr, msg
+    return overlap, spearman, msg
 
 
 def lowercase_samples(samples, negation=False):
@@ -365,7 +367,7 @@ def main(args, shuffle_data=True, model=None):
     # spearman rank correlation
     # overlap at 1
     if args.negation:
-        Spearmanr = 0.0
+        Spearman = 0.0
         Overlap = 0.0
         num_valid_negation = 0.0
 
@@ -417,9 +419,10 @@ def main(args, shuffle_data=True, model=None):
                 args.template.strip(), sample["sub_label"].strip(), base.MASK
             )
             # substitute all negated sentences with a standard template
-            sample["negated"] = parse_template(
-                args.template_negated.strip(), sample["sub_label"].strip(), base.MASK
-            )
+            sample["negated"] = parse_template(args.template_negated.strip(),
+                                               sample["sub_label"].strip(),
+                                               base.MASK
+                                               )
             all_samples.append(sample)
 
     # create uuid if not present
@@ -456,7 +459,6 @@ def main(args, shuffle_data=True, model=None):
             sentences_b, logger=logger
         )
 
-
         if vocab_subset is not None:
             # filter log_probs
             filtered_log_probs_list = model.filter_logprobs(
@@ -488,7 +490,6 @@ def main(args, shuffle_data=True, model=None):
                 )
 
             label_index_list.append(obj_label_id)
-
 
         arguments = [
             {
@@ -592,15 +593,14 @@ def main(args, shuffle_data=True, model=None):
             # print()
 
             if args.negation:
-                spearmanr, overlap, msg = res_negated[idx]
+                spearman, overlap, msg = res_negated[idx]
                 # sum overlap and spearmanr if not nan
-                if spearmanr == spearmanr:
-                    element["spearmanr"] = spearmanr
+                if spearman == spearman:
+                    element["spearmanr"] = spearman
                     element["overlap"] = overlap
                     Overlap += overlap
-                    Spearmanr += spearmanr
+                    Spearman += spearman
                     num_valid_negation += 1.0
-
 
             MRR += sample_MRR
             Precision += sample_P
@@ -650,11 +650,11 @@ def main(args, shuffle_data=True, model=None):
 
     if args.negation:
         Overlap /= num_valid_negation
-        Spearmanr /= num_valid_negation
+        Spearman /= num_valid_negation
         msg += "\n"
         msg += "results negation:\n"
-        msg += "global spearman rank affirmative vs. negated: {}\n".format(Overlap)
-        msg += "global overlap at 1 affirmative vs. negated: {}\n".format(Spearmanr)
+        msg += "global spearman rank affirmative/negated: {}\n".format(Overlap)
+        msg += "global overlap at 1 affirmative/negated: {}\n".format(Spearman)
 
     if samples_with_negative_judgement > 0 and samples_with_positive_judgement > 0:
         # Google-RE specific

@@ -111,7 +111,8 @@ def __overlap_negation(index_max_probs_n, index_max_probs):
     return overlap
 
 
-def metric_negation(log_probs, masked_indices, log_probs_n, masked_indices_n, vocab, index_list=None, topk = 1):
+def metric_negation(log_probs, masked_indices, log_probs_n, masked_indices_n,
+                    vocab, index_list=None, topk=1):
 
     return_msg = ""
     # if negated sentence present
@@ -121,14 +122,15 @@ def metric_negation(log_probs, masked_indices, log_probs_n, masked_indices_n, vo
         masked_indices = masked_indices[:1]
         masked_index = masked_indices[0]
         log_probs = log_probs[masked_index]
-        __value_max_probs, index_max_probs = torch.topk(input=log_probs,k=topk,dim=0)
+        __value_max_probs, index_max_probs = torch.topk(input=log_probs,
+                                                        k=topk, dim=0)
         index_max_probs = index_max_probs.numpy().astype(int)
-
 
         masked_indices_n = masked_indices_n[:1]
         masked_index_n = masked_indices_n[0]
         log_probs_n = log_probs_n[masked_index_n]
-        __value_max_probs_n, index_max_probs_n = torch.topk(input=log_probs_n,k=topk,dim=0)
+        __value_max_probs_n, index_max_probs_n = torch.topk(input=log_probs_n,
+                                                            k=topk, dim=0)
         index_max_probs_n = index_max_probs_n.numpy().astype(int)
 
         # overlap btw. affirmative and negated first ranked prediction: 0 or 1
