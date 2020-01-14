@@ -183,11 +183,11 @@ def run_thread_negated(arguments):
 
     msg = ""
 
-    overlap, spearman, return_msg = metrics.metric_negation(
+    overlap, spearman, return_msg = metrics.get_negation_metric(
         arguments["log_probs"],
         arguments["masked_indices"],
         arguments["log_probs_n"],
-        arguments["masked_indices_n"],
+        arguments["masked_indices_negated"],
         arguments["vocab"],
         index_list=arguments["index_list"])
 
@@ -196,7 +196,7 @@ def run_thread_negated(arguments):
     return overlap, spearman, msg
 
 
-def lowercase_samples(samples, negation=False):
+def lowercase_samples(samples, use_negated_probes=False):
     new_samples = []
     for sample in samples:
         sample["obj_label"] = sample["obj_label"].lower()
@@ -208,7 +208,7 @@ def lowercase_samples(samples, negation=False):
             lower_masked_sentences.append(sentence)
         sample["masked_sentences"] = lower_masked_sentences
 
-        if "negated" in sample and negation:
+        if "negated" in sample and use_negated_probes:
             for sentence in sample["negated"]:
                 sentence = sentence.lower()
                 sentence = sentence.replace(base.MASK.lower(), base.MASK)
@@ -366,7 +366,7 @@ def main(args, shuffle_data=True, model=None):
 
     # spearman rank correlation
     # overlap at 1
-    if args.negation:
+    if args.use_negated_probes:
         Spearman = 0.0
         Overlap = 0.0
         num_valid_negation = 0.0
@@ -378,7 +378,7 @@ def main(args, shuffle_data=True, model=None):
     if args.lowercase:
         # lowercase all samples
         logger.info("lowercasing all samples...")
-        all_samples = lowercase_samples(data, negation=args.negation)
+        all_samples = lowercase_samples(data, use_negated_probes=args.use_negated_probes)
     else:
         # keep samples as they are
         all_samples = data
@@ -438,8 +438,8 @@ def main(args, shuffle_data=True, model=None):
 
     samples_batches, sentences_batches, ret_msg = batchify(all_samples, args.batch_size)
     logger.info("\n" + ret_msg + "\n")
-    if args.negation:
-        sentences_batches_n, ret_msg = batchify_negated(all_samples, args.batch_size)
+    if args.use_negated_probes:
+        sentences_batches_negated, ret_msg = batchify_negated(all_samples, args.batch_size)
         logger.info("\n" + ret_msg + "\n")
 
     # ThreadPool
@@ -520,42 +520,42 @@ def main(args, shuffle_data=True, model=None):
         # multithread
         res = pool.map(run_thread, arguments)
 
-        if args.negation:
-            sentences_b_n = sentences_batches_n[i]
+        if args.use_negated_probes:
+            sentences_b_negated = sentences_batches_negated[i]
 
             # if no negated sentences in batch
-            if all(s[0] == "" for s in sentences_b_n):
+            if all(s[0] == "" for s in sentences_b_negated):
                 res_negated = [(float('nan'), float('nan'), ""),]*args.batch_size
             # eval negated batch
             else:
-                original_log_probs_list_n, token_ids_list_n, masked_indices_list_n = model.get_batch_generation(
-                    sentences_b_n, logger=logger
+                original_log_probs_list_negated, token_ids_list_negated, masked_indices_list_negated = model.get_batch_generation(
+                    sentences_b_negated, logger=logger
                 )
                 if vocab_subset is not None:
                     # filter log_probs
-                    filtered_log_probs_list_n = model.filter_logprobs(
-                        original_log_probs_list_n, filter_logprob_indices
+                    filtered_log_probs_list_negated = model.filter_logprobs(
+                        original_log_probs_list_negated, filter_logprob_indices
                     )
                 else:
-                    filtered_log_probs_list_n = original_log_probs_list_n
+                    filtered_log_probs_list_negated = original_log_probs_list_negated
 
                 arguments = [
                     {
                         "log_probs": filtered_log_probs,
-                        "log_probs_n": filtered_log_probs_n,
+                        "log_probs_negated": filtered_log_probs_negated,
                         "token_ids": token_ids,
                         "vocab": model.vocab,
                         "label_index": label_index[0],
                         "masked_indices": masked_indices,
-                        "masked_indices_n": masked_indices_n,
+                        "masked_indices_negated": masked_indices_negated,
                         "index_list": index_list,
                     }
-                    for filtered_log_probs, filtered_log_probs_n, token_ids, masked_indices, masked_indices_n, label_index in zip(
+                    for filtered_log_probs, filtered_log_probs_negated, token_ids, masked_indices, masked_indices_negated, label_index in zip(
                         filtered_log_probs_list,
-                        filtered_log_probs_list_n,
+                        filtered_log_probs_list_negated,
                         token_ids_list,
                         masked_indices_list,
-                        masked_indices_list_n,
+                        masked_indices_list_negated,
                         label_index_list,
                     )
                 ]
@@ -592,7 +592,7 @@ def main(args, shuffle_data=True, model=None):
             # print("sample: {}".format(sample))
             # print()
 
-            if args.negation:
+            if args.use_negated_probes:
                 spearman, overlap, msg = res_negated[idx]
                 # sum overlap and spearmanr if not nan
                 if spearman == spearman:
@@ -648,11 +648,12 @@ def main(args, shuffle_data=True, model=None):
     msg += "global Precision at 10: {}\n".format(Precision)
     msg += "global Precision at 1: {}\n".format(Precision1)
 
-    if args.negation:
+    if args.use_negated_probes:
         Overlap /= num_valid_negation
         Spearman /= num_valid_negation
         msg += "\n"
         msg += "results negation:\n"
+        msg += "all_samples: {}\n".format(len(num_valid_negation))
         msg += "global spearman rank affirmative/negated: {}\n".format(Overlap)
         msg += "global overlap at 1 affirmative/negated: {}\n".format(Spearman)
 

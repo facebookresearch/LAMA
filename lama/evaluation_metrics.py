@@ -36,10 +36,7 @@ def __print_top_k(value_max_probs, index_max_probs, vocab, mask_topk, index_list
         result.append(element)
     return result, msg
 
-
-def get_ranking(log_probs, masked_indices, vocab, label_index = None, index_list = None, topk = 1000, P_AT = 10, print_generation=True):
-
-    experiment_result = {}
+def __max_probs_values_indices(masked_indices, log_probs, topk=1000):
 
     # score only first mask
     masked_indices = masked_indices[:1]
@@ -50,6 +47,15 @@ def get_ranking(log_probs, masked_indices, vocab, label_index = None, index_list
     value_max_probs, index_max_probs = torch.topk(input=log_probs,k=topk,dim=0)
     index_max_probs = index_max_probs.numpy().astype(int)
     value_max_probs = value_max_probs.detach().numpy()
+
+    return index_max_probs, value_max_probs
+
+
+def get_ranking(log_probs, masked_indices, vocab, label_index = None, index_list = None, topk = 1000, P_AT = 10, print_generation=True):
+
+    experiment_result = {}
+
+    index_max_probs, value_max_probs = __max_probs_values_indices(masked_indices, log_probs, topk=topk)
 
     result_masked_topk, return_msg = __print_top_k(value_max_probs, index_max_probs, vocab, topk, index_list)
     experiment_result['topk'] = result_masked_topk
@@ -105,41 +111,41 @@ def get_ranking(log_probs, masked_indices, vocab, label_index = None, index_list
 
 
 def __overlap_negation(index_max_probs_n, index_max_probs):
-    overlap = 0
-    if index_max_probs_n == index_max_probs:
-        overlap = 1
-    return overlap
+    # compares first ranked prediction of affirmative and negated statements
+    # if true 1, else: 0
+    return return int(index_max_probs_n == index_max_probs)
 
 
-def metric_negation(log_probs, masked_indices, log_probs_n, masked_indices_n,
-                    vocab, index_list=None, topk=1):
+def get_negation_metric(log_probs, masked_indices, log_probs_negated,
+                        masked_indices_negated, vocab, index_list=None,
+                        topk = 1):
 
     return_msg = ""
     # if negated sentence present
-    if len(masked_indices_n) > 0:
+    if len(masked_indices_negated) > 0:
 
         # score only first mask
         masked_indices = masked_indices[:1]
         masked_index = masked_indices[0]
         log_probs = log_probs[masked_index]
-        __value_max_probs, index_max_probs = torch.topk(input=log_probs,
-                                                        k=topk, dim=0)
+        _, index_max_probs = torch.topk(input=log_probs, k=topk, dim=0)
         index_max_probs = index_max_probs.numpy().astype(int)
 
-        masked_indices_n = masked_indices_n[:1]
-        masked_index_n = masked_indices_n[0]
-        log_probs_n = log_probs_n[masked_index_n]
-        __value_max_probs_n, index_max_probs_n = torch.topk(input=log_probs_n,
-                                                            k=topk, dim=0)
-        index_max_probs_n = index_max_probs_n.numpy().astype(int)
+        index_max_probs, _ = __max_probs_values_indices(masked_indices,
+                                                        log_probs, topk=topk)
+        index_max_probs_negated, _ = \
+            __max_probs_values_indices(masked_indices_negated,
+                                       log_probs_negated, topk=topk)
 
         # overlap btw. affirmative and negated first ranked prediction: 0 or 1
-        overlap = __overlap_negation(index_max_probs_n[0], index_max_probs[0])
+        overlap = __overlap_negation(index_max_probs_negated[0],
+                                     index_max_probs[0])
         # rank corrl. btw. affirmative and negated predicted log_probs
-        spearmanr = scipy.stats.spearmanr(log_probs, log_probs_n)[0]
+        spearman_rank_corr = scipy.stats.spearmanr(log_probs,
+                                                   log_probs_negated)[0]
 
     else:
         overlap = np.nan
         spearmanr = np.nan
 
-    return overlap, spearmanr, return_msg
+    return overlap, spearman_rank_corr, return_msg
