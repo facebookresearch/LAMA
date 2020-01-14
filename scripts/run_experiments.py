@@ -77,7 +77,7 @@ def run_experiments(
         "models_names": ["bert"],
         "bert_model_name": "bert-large-cased",
         "bert_model_dir": "pre-trained_language_models/bert/cased_L-24_H-1024_A-16",
-    }, negation=False,
+    }, use_negated_probes=False,
 ):
     model = None
     pp = pprint.PrettyPrinter(width=41, compact=True)
@@ -97,7 +97,7 @@ def run_experiments(
             "common_vocab_filename": "pre-trained_language_models/common_vocab_cased.txt",
             "template": "",
             "bert_vocab_name": "vocab.txt",
-            "batch_size": 16,
+            "batch_size": 32,
             "logdir": "output",
             "full_logdir": "output/results/{}/{}".format(
                 input_param["label"], relation["relation"]
@@ -106,7 +106,7 @@ def run_experiments(
             "max_sentence_length": 100,
             "threads": -1,
             "interactive": False,
-            "negation": negation
+            "use_negated_probes": use_negated_probes
         }
 
         if "template" in relation:
@@ -201,7 +201,7 @@ def get_Squad_parameters(data_path_pre="data/"):
 def run_all_LMs(parameters):
     for ip in LMs:
         print(ip["label"])
-        run_experiments(*parameters, input_param=ip, negation=True)
+        run_experiments(*parameters, input_param=ip, use_negated_probes=True)
 
 
 if __name__ == "__main__":

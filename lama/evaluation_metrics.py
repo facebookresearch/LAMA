@@ -48,15 +48,14 @@ def __max_probs_values_indices(masked_indices, log_probs, topk=1000):
     index_max_probs = index_max_probs.numpy().astype(int)
     value_max_probs = value_max_probs.detach().numpy()
 
-    return index_max_probs, value_max_probs
+    return log_probs, index_max_probs, value_max_probs
 
 
 def get_ranking(log_probs, masked_indices, vocab, label_index = None, index_list = None, topk = 1000, P_AT = 10, print_generation=True):
 
     experiment_result = {}
 
-    index_max_probs, value_max_probs = __max_probs_values_indices(masked_indices, log_probs, topk=topk)
-
+    log_probs, index_max_probs, value_max_probs = __max_probs_values_indices(masked_indices, log_probs, topk=topk)
     result_masked_topk, return_msg = __print_top_k(value_max_probs, index_max_probs, vocab, topk, index_list)
     experiment_result['topk'] = result_masked_topk
 
@@ -110,10 +109,10 @@ def get_ranking(log_probs, masked_indices, vocab, label_index = None, index_list
     return MRR, P_AT_X, experiment_result, return_msg
 
 
-def __overlap_negation(index_max_probs_n, index_max_probs):
+def __overlap_negation(index_max_probs__negated, index_max_probs):
     # compares first ranked prediction of affirmative and negated statements
     # if true 1, else: 0
-    return return int(index_max_probs_n == index_max_probs)
+    return int(index_max_probs__negated == index_max_probs)
 
 
 def get_negation_metric(log_probs, masked_indices, log_probs_negated,
@@ -124,16 +123,9 @@ def get_negation_metric(log_probs, masked_indices, log_probs_negated,
     # if negated sentence present
     if len(masked_indices_negated) > 0:
 
-        # score only first mask
-        masked_indices = masked_indices[:1]
-        masked_index = masked_indices[0]
-        log_probs = log_probs[masked_index]
-        _, index_max_probs = torch.topk(input=log_probs, k=topk, dim=0)
-        index_max_probs = index_max_probs.numpy().astype(int)
-
-        index_max_probs, _ = __max_probs_values_indices(masked_indices,
-                                                        log_probs, topk=topk)
-        index_max_probs_negated, _ = \
+        log_probs, index_max_probs, _ = \
+            __max_probs_values_indices(masked_indices, log_probs, topk=topk)
+        log_probs_negated, index_max_probs_negated, _ = \
             __max_probs_values_indices(masked_indices_negated,
                                        log_probs_negated, topk=topk)
 

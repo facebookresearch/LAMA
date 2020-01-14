@@ -186,7 +186,7 @@ def run_thread_negated(arguments):
     overlap, spearman, return_msg = metrics.get_negation_metric(
         arguments["log_probs"],
         arguments["masked_indices"],
-        arguments["log_probs_n"],
+        arguments["log_probs_negated"],
         arguments["masked_indices_negated"],
         arguments["vocab"],
         index_list=arguments["index_list"])
@@ -653,7 +653,7 @@ def main(args, shuffle_data=True, model=None):
         Spearman /= num_valid_negation
         msg += "\n"
         msg += "results negation:\n"
-        msg += "all_samples: {}\n".format(len(num_valid_negation))
+        msg += "all_negated_samples: {}\n".format(int(num_valid_negation))
         msg += "global spearman rank affirmative/negated: {}\n".format(Overlap)
         msg += "global overlap at 1 affirmative/negated: {}\n".format(Spearman)
 
