@@ -16,7 +16,36 @@ from os.path import isfile, join
 from shutil import copyfile
 from collections import defaultdict
 
+# Copyright (c) Facebook, Inc. and its affiliates.
+# All rights reserved.
+#
+# This source code is licensed under the license found in the
+# LICENSE file in the root directory of this source tree.
+#
+import argparse
+from batch_eval_KB_completion import main as run_evaluation
+from batch_eval_KB_completion import load_file
+from lama.modules import build_model_by_name
+import pprint
+import statistics
+from os import listdir
+import os
+from os.path import isfile, join
+from shutil import copyfile
+from collections import defaultdict
+
 LMs = [
+    {
+        "lm":
+        "transformerxl",
+        "label":
+        "transformerxl",
+        "models_names": ["transformerxl"],
+        "transformerxl_model_name":
+        'transfo-xl-wt103',
+        "transformerxl_model_dir":
+        "pre-trained_language_models/transformerxl/transfo-xl-wt103/"
+    },
     {
         "lm": "elmo",
         "label": "elmo",
@@ -195,13 +224,13 @@ def run_all_LMs(parameters):
 
 if __name__ == "__main__":
 
-    """print("1. Google-RE")
+    print("1. Google-RE")
     parameters = get_GoogleRE_parameters()
     run_all_LMs(parameters)"
 
     print("2. T-REx")
     parameters = get_TREx_parameters()
-    run_all_LMs(parameters)"""
+    run_all_LMs(parameters)
 
     print("3. ConceptNet")
     parameters = get_ConceptNet_parameters()
