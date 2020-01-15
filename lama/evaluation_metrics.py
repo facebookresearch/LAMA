@@ -9,6 +9,20 @@ import numpy as np
 import scipy
 
 
+def __max_probs_values_indices(masked_indices, log_probs, topk=1000):
+
+    # score only first mask
+    masked_indices = masked_indices[:1]
+
+    masked_index = masked_indices[0]
+    log_probs = log_probs[masked_index]
+
+    value_max_probs, index_max_probs = torch.topk(input=log_probs,k=topk,dim=0)
+    index_max_probs = index_max_probs.numpy().astype(int)
+    value_max_probs = value_max_probs.detach().numpy()
+
+    return log_probs, index_max_probs, value_max_probs
+
 
 def __print_top_k(value_max_probs, index_max_probs, vocab, mask_topk, index_list, max_printouts = 10):
     result = []
@@ -35,20 +49,6 @@ def __print_top_k(value_max_probs, index_max_probs, vocab, mask_topk, index_list
         element = {'i' : i, 'token_idx': idx, 'log_prob': log_prob, 'token_word_form': word_form}
         result.append(element)
     return result, msg
-
-def __max_probs_values_indices(masked_indices, log_probs, topk=1000):
-
-    # score only first mask
-    masked_indices = masked_indices[:1]
-
-    masked_index = masked_indices[0]
-    log_probs = log_probs[masked_index]
-
-    value_max_probs, index_max_probs = torch.topk(input=log_probs,k=topk,dim=0)
-    index_max_probs = index_max_probs.numpy().astype(int)
-    value_max_probs = value_max_probs.detach().numpy()
-
-    return log_probs, index_max_probs, value_max_probs
 
 
 def get_ranking(log_probs, masked_indices, vocab, label_index = None, index_list = None, topk = 1000, P_AT = 10, print_generation=True):
