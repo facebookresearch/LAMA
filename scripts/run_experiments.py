@@ -208,7 +208,7 @@ if __name__ == "__main__":
 
     print("1. Google-RE")
     parameters = get_GoogleRE_parameters()
-    run_all_LMs(parameters)"
+    run_all_LMs(parameters)
 
     print("2. T-REx")
     parameters = get_TREx_parameters()
