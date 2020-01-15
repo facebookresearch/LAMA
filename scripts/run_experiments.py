@@ -16,24 +16,6 @@ from os.path import isfile, join
 from shutil import copyfile
 from collections import defaultdict
 
-# Copyright (c) Facebook, Inc. and its affiliates.
-# All rights reserved.
-#
-# This source code is licensed under the license found in the
-# LICENSE file in the root directory of this source tree.
-#
-import argparse
-from batch_eval_KB_completion import main as run_evaluation
-from batch_eval_KB_completion import load_file
-from lama.modules import build_model_by_name
-import pprint
-import statistics
-from os import listdir
-import os
-from os.path import isfile, join
-from shutil import copyfile
-from collections import defaultdict
-
 LMs = [
     {
         "lm":
