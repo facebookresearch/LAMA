@@ -138,6 +138,6 @@ def get_negation_metric(log_probs, masked_indices, log_probs_negated,
 
     else:
         overlap = np.nan
-        spearmanr = np.nan
+        spearman_rank_corr = np.nan
 
     return overlap, spearman_rank_corr, return_msg
