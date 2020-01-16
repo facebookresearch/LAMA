@@ -74,6 +74,8 @@ python scripts/run_experiments.py
 
 results will be logged in _output/_ and  _last_results.csv_.
 
+## Other versions of LAMA
+
 ### LAMA-UHN
 
 This repository also provides a script (`scripts/create_lama_uhn.py`) to create the data used in (Poerner et al., 2019).
@@ -249,6 +251,8 @@ If the experiments fail on GPU memory allocation, try reducing batch size.
 
 
 ## Other References
+
+- __(Kassner et al., 2019)__ Nora Kassner, Hinrich Schütze. _Negated LAMA: Birds cannot fly_. arXiv preprint arXiv:1911.03343, 2019.
 
 - __(Poerner et al., 2019)__ Nina Poerner, Ulli Waltinger, and Hinrich Schütze. _BERT is Not a Knowledge Base (Yet): Factual Knowledge vs. Name-Based Reasoning in Unsupervised QA_. arXiv preprint arXiv:1911.03681, 2019.
 
