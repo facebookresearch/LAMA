@@ -81,7 +81,7 @@ results will be logged in _output/_ and  _last_results.csv_.
 This repository also provides a script (`scripts/create_lama_uhn.py`) to create the data used in (Poerner et al., 2019).
 
 ### Negated-LAMA
-This repository also gives the option to evalute how pretrained language models handle negated probes (Kassner et al., 2019), set the flag `use_negated_probes` in `scripts/run_experiments.py`. Also, you should use this version of the LAMA probe https://dl.fbaipublicfiles.com/LAMA/negated_data.zip .
+This repository also gives the option to evalute how pretrained language models handle negated probes (Kassner et al., 2019), set the flag `use_negated_probes` in `scripts/run_experiments.py`. Also, you should use this version of the LAMA probe https://dl.fbaipublicfiles.com/LAMA/negated_data.tar.gz
 
 ## What else can you do with LAMA?
 
