@@ -1,7 +1,7 @@
 # LAMA: LAnguage Model Analysis
 <img align="middle" src="img/logo.png" height="256" alt="LAMA">
 
-LAMA ia a probe for analyzing the factual and commonsense knowledge contained in pretrained language models. <br>
+LAMA is a probe for analyzing the factual and commonsense knowledge contained in pretrained language models. <br>
 #### The dataset for the LAMA probe is available at https://dl.fbaipublicfiles.com/LAMA/data.zip <br>
 LAMA contains a set of connectors to pretrained language models. <br>
 LAMA exposes a transparent and unique interface to use:
@@ -66,7 +66,7 @@ The script will create and populate a _pre-trained_language_models_ folder.
 If you are interested in a particular model please edit the script.
 
 
-### 4. Run the experiemnts
+### 4. Run the experiments
 
 ```bash
 python scripts/run_experiments.py
