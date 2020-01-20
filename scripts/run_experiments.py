@@ -111,7 +111,8 @@ def run_experiments(
 
         if "template" in relation:
             PARAMETERS["template"] = relation["template"]
-            PARAMETERS["template_negated"] = relation["template_negated"]
+            if use_negated_probes:
+                PARAMETERS["template_negated"] = relation["template_negated"]
 
         PARAMETERS.update(input_param)
         print(PARAMETERS)
