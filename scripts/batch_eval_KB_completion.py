@@ -189,7 +189,8 @@ def run_thread_negated(arguments):
         arguments["log_probs_negated"],
         arguments["masked_indices_negated"],
         arguments["vocab"],
-        index_list=arguments["index_list"])
+        index_list=arguments["index_list"],
+    )
 
     msg += "\n" + return_msg
 
@@ -378,7 +379,9 @@ def main(args, shuffle_data=True, model=None):
     if args.lowercase:
         # lowercase all samples
         logger.info("lowercasing all samples...")
-        all_samples = lowercase_samples(data, use_negated_probes=args.use_negated_probes)
+        all_samples = lowercase_samples(
+            data, use_negated_probes=args.use_negated_probes
+        )
     else:
         # keep samples as they are
         all_samples = data
@@ -418,11 +421,13 @@ def main(args, shuffle_data=True, model=None):
             sample["masked_sentences"] = parse_template(
                 args.template.strip(), sample["sub_label"].strip(), base.MASK
             )
-            # substitute all negated sentences with a standard template
-            sample["negated"] = parse_template(args.template_negated.strip(),
-                                               sample["sub_label"].strip(),
-                                               base.MASK
-                                               )
+            if args.use_negated_probes:
+                # substitute all negated sentences with a standard template
+                sample["negated"] = parse_template(
+                    args.template_negated.strip(),
+                    sample["sub_label"].strip(),
+                    base.MASK,
+                )
             all_samples.append(sample)
 
     # create uuid if not present
@@ -439,7 +444,9 @@ def main(args, shuffle_data=True, model=None):
     samples_batches, sentences_batches, ret_msg = batchify(all_samples, args.batch_size)
     logger.info("\n" + ret_msg + "\n")
     if args.use_negated_probes:
-        sentences_batches_negated, ret_msg = batchify_negated(all_samples, args.batch_size)
+        sentences_batches_negated, ret_msg = batchify_negated(
+            all_samples, args.batch_size
+        )
         logger.info("\n" + ret_msg + "\n")
 
     # ThreadPool
@@ -455,9 +462,11 @@ def main(args, shuffle_data=True, model=None):
         samples_b = samples_batches[i]
         sentences_b = sentences_batches[i]
 
-        original_log_probs_list, token_ids_list, masked_indices_list = model.get_batch_generation(
-            sentences_b, logger=logger
-        )
+        (
+            original_log_probs_list,
+            token_ids_list,
+            masked_indices_list,
+        ) = model.get_batch_generation(sentences_b, logger=logger)
 
         if vocab_subset is not None:
             # filter log_probs
@@ -525,12 +534,14 @@ def main(args, shuffle_data=True, model=None):
 
             # if no negated sentences in batch
             if all(s[0] == "" for s in sentences_b_negated):
-                res_negated = [(float('nan'), float('nan'), ""),]*args.batch_size
+                res_negated = [(float("nan"), float("nan"), ""),] * args.batch_size
             # eval negated batch
             else:
-                original_log_probs_list_negated, token_ids_list_negated, masked_indices_list_negated = model.get_batch_generation(
-                    sentences_b_negated, logger=logger
-                )
+                (
+                    original_log_probs_list_negated,
+                    token_ids_list_negated,
+                    masked_indices_list_negated,
+                ) = model.get_batch_generation(sentences_b_negated, logger=logger)
                 if vocab_subset is not None:
                     # filter log_probs
                     filtered_log_probs_list_negated = model.filter_logprobs(
