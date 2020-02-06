@@ -209,7 +209,6 @@ def run_all_LMs(parameters):
 
 if __name__ == "__main__":
 
-    """ 
     print("1. Google-RE")
     parameters = get_GoogleRE_parameters()
     run_all_LMs(parameters)
@@ -217,15 +216,12 @@ if __name__ == "__main__":
     print("2. T-REx")
     parameters = get_TREx_parameters()
     run_all_LMs(parameters)
-    """
 
     print("3. ConceptNet")
     parameters = get_ConceptNet_parameters()
     run_all_LMs(parameters)
 
-    """
     print("4. SQuAD")
     parameters = get_Squad_parameters()
     run_all_LMs(parameters)
-    """
 
