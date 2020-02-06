@@ -534,7 +534,7 @@ def main(args, shuffle_data=True, model=None):
 
             # if no negated sentences in batch
             if all(s[0] == "" for s in sentences_b_negated):
-                res_negated = [(float("nan"), float("nan"), ""),] * args.batch_size
+                res_negated = [(float("nan"), float("nan"), "")] * args.batch_size
             # eval negated batch
             else:
                 (
