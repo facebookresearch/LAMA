@@ -136,7 +136,7 @@ class GPT(Base_Connector):
             np.array(dst_tensor.numpy()) for dst_tensor in dst_tensor_list
         ]
 
-        return log_probs, token_ids_list, masked_indices_list
+        return log_probs, token_ids_list, masked_indices_list, {}
 
     def get_contextual_embeddings(self, sentences_list, try_cuda=True):
 

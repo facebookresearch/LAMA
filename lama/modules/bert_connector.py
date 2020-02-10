@@ -6,7 +6,7 @@
 #
 import torch
 import pytorch_pretrained_bert.tokenization as btok
-from pytorch_pretrained_bert import BertTokenizer, BertForMaskedLM, BasicTokenizer, BertModel
+from pytorch_pretrained_bert import BertTokenizer, BertForMaskedLM, BasicTokenizer, BertModel, BertForNextSentencePrediction
 import numpy as np
 from lama.modules.base_connector import *
 import torch.nn.functional as F
@@ -86,6 +86,11 @@ class Bert(Base_Connector):
         self.masked_bert_model = BertForMaskedLM.from_pretrained(bert_model_name)
 
         self.masked_bert_model.eval()
+
+        self.do_nsp = args.nsp
+        if self.do_nsp:
+            self.nsp_bert_model = BertForNextSentencePrediction.from_pretrained(bert_model_name)
+            self.nsp_bert_model.eval()
 
         # ... to get hidden states
         self.bert_model = self.masked_bert_model.bert
@@ -209,6 +214,8 @@ class Bert(Base_Connector):
 
     def _cuda(self):
         self.masked_bert_model.cuda()
+        if self.do_nsp:
+            self.nsp_bert_model.cuda()
 
     def get_batch_generation(self, sentences_list, logger= None,
                              try_cuda=True):
@@ -222,6 +229,8 @@ class Bert(Base_Connector):
         if logger is not None:
             logger.debug("\n{}\n".format(tokenized_text_list))
 
+        meta = {}
+
         with torch.no_grad():
             logits = self.masked_bert_model(
                 input_ids=tokens_tensor.to(self._model_device),
@@ -231,11 +240,20 @@ class Bert(Base_Connector):
 
             log_probs = F.log_softmax(logits, dim=-1).cpu()
 
+            if self.do_nsp:
+                nsp_logits = self.nsp_bert_model(
+                    input_ids=tokens_tensor.to(self._model_device),
+                    token_type_ids=segments_tensor.to(self._model_device),
+                    attention_mask=attention_mask_tensor.to(self._model_device),
+                )
+                nsp_log_probs = F.log_softmax(nsp_logits, dim=-1).cpu()
+                meta['nsp_log_probs'] = nsp_log_probs
+
         token_ids_list = []
         for indexed_string in tokens_tensor.numpy():
             token_ids_list.append(self.__get_token_ids_from_tensor(indexed_string))
 
-        return log_probs, token_ids_list, masked_indices_list
+        return log_probs, token_ids_list, masked_indices_list, meta
 
     def get_contextual_embeddings(self, sentences_list, try_cuda=True):
 

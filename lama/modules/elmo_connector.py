@@ -190,7 +190,7 @@ class Elmo(Base_Connector):
                 token_ids = np.append(token_ids, self.inverse_vocab[ELMO_END_SENTENCE])
             token_ids_list.append(token_ids)
 
-        return avg_log_probs, token_ids_list, masked_indices_list
+        return avg_log_probs, token_ids_list, masked_indices_list, {}
 
     def get_contextual_embeddings(self, sentences_list, try_cuda=True):
         if not sentences_list:

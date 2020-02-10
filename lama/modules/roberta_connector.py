@@ -155,7 +155,7 @@ class Roberta(Base_Connector):
                 return_all_hiddens=False,
             )
 
-        return log_probs.cpu(), output_tokens_list, masked_indices_list
+        return log_probs.cpu(), output_tokens_list, masked_indices_list, {}
 
     def get_contextual_embeddings(self, sentences_list, try_cuda=True):
         # TBA
