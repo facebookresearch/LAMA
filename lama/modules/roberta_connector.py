@@ -81,7 +81,7 @@ class Roberta(Base_Connector):
         tokens = self.task.source_dictionary.encode_line(
             text_spans_bpe, append_eos=False
         )
-        return tokens.long()
+        return [element.item() for element in tokens.long().flatten()]
 
     def get_batch_generation(self, sentences_list, logger=None, try_cuda=True):
         if not sentences_list:
@@ -120,7 +120,7 @@ class Roberta(Base_Connector):
 
                 tokens_list.append(
                     self.task.source_dictionary.encode_line(
-                        prefix + " " + text_spans_bpe, append_eos=True
+                        str(prefix + " " + text_spans_bpe).strip(), append_eos=True
                     )
                 )
 
