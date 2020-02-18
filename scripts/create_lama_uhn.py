@@ -30,14 +30,13 @@ class LAMAUHNFilter:
     def match(self, sub_label, obj_label, relation):
         raise NotImplementedError()
     
-
+    def filter(self, queries):
         return [query for query in queries if not self.match(query)]
 
 
 class PersonNameFilter(LAMAUHNFilter):
     TEMP = "[CLS] [X] is a common name in the following [Y] : [MASK] . [SEP]"
     
-
     PLACENOUNS = {
         "/people/person/place_of_birth": "city",
         "/people/deceased_person/place_of_death": "city",
@@ -48,12 +47,14 @@ class PersonNameFilter(LAMAUHNFilter):
         "P103": "language",
     }
 
+    def __init__(self, top_k, bert_name):
+        super().__init__()
         self.do_lower_case = "uncased" in bert_name
         self.top_k = top_k
-        self.tokenizer = BertTokenizer.from_pretrained(bert_name, 
         self.tokenizer = BertTokenizer.from_pretrained(
             bert_name, do_lower_case=self.do_lower_case
         )
+        self.model = BertForMaskedLM.from_pretrained(bert_name)
         self.model.eval()
 
     def get_top_k_for_name(self, template, name):
@@ -61,8 +62,8 @@ class PersonNameFilter(LAMAUHNFilter):
         input_ids = self.tokenizer.convert_tokens_to_ids(tokens)
         output = self.model(torch.tensor(input_ids).unsqueeze(0))[0]
         logits = output[tokens.index("[MASK]")].detach()
-        top_k_ids = torch.topk(logits, k = self.top_k)[1].numpy()
         top_k_ids = torch.topk(logits, k=self.top_k)[1].numpy()
+        top_k_tokens = self.tokenizer.convert_ids_to_tokens(top_k_ids)
         return top_k_tokens
 
     def match(self, query):
@@ -76,8 +77,8 @@ class PersonNameFilter(LAMAUHNFilter):
             sub_label = sub_label.lower()
 
         template = self.TEMP.replace("[Y]", self.PLACENOUNS[relation])
-        for name in sub_label.split(): 
         for name in sub_label.split():
+            if obj_label in self.get_top_k_for_name(template, name):
                 return True
         return False
 
@@ -86,7 +87,7 @@ class StringMatchFilter(LAMAUHNFilter):
     def __init__(self, do_lower_case):
         self.do_lower_case = do_lower_case
     
-
+    def match(self, query):
         sub_label, obj_label = query["sub_label"], query["obj_label"]
         if self.do_lower_case:
             sub_label = sub_label.lower()
@@ -104,11 +105,10 @@ def main(args):
 
     uhn_filters = []
     if "string_match" in args.filters:
-        uhn_filters.append(StringMatchFilter(\
         uhn_filters.append(
             StringMatchFilter(do_lower_case=args.string_match_do_lowercase)
         )
-        uhn_filters.append(PersonNameFilter(\
+    if "person_name" in args.filters:
         uhn_filters.append(
             PersonNameFilter(
                 bert_name=args.person_name_bert, top_k=args.person_name_top_k
@@ -118,7 +118,7 @@ def main(args):
         infile = os.path.join(srcdir, filename)
         outfile = os.path.join(tgtdir, filename)
         
-
+        with open(infile) as handle:
             queries = [json.loads(line) for line in handle]
 
         for uhn_filter in uhn_filters:
@@ -131,7 +131,6 @@ def main(args):
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser()
-    
 
     argparser.add_argument(
         "--srcdir",
@@ -166,8 +165,7 @@ if __name__ == "__main__":
         dest="string_match_do_lowercase",
         help="Set flag to disable lowercasing in string match filter",
     )
+    args = argparser.parse_args()
 
     print(args)
     main(args)
-
-
