@@ -593,7 +593,7 @@ def main(args, shuffle_data=True, model=None):
             # print()
 
             if args.use_negated_probes:
-                spearman, overlap, msg = res_negated[idx]
+                overlap, spearman, msg = res_negated[idx]
                 # sum overlap and spearmanr if not nan
                 if spearman == spearman:
                     element["spearmanr"] = spearman
@@ -654,8 +654,8 @@ def main(args, shuffle_data=True, model=None):
         msg += "\n"
         msg += "results negation:\n"
         msg += "all_negated_samples: {}\n".format(int(num_valid_negation))
-        msg += "global spearman rank affirmative/negated: {}\n".format(Overlap)
-        msg += "global overlap at 1 affirmative/negated: {}\n".format(Spearman)
+        msg += "global spearman rank affirmative/negated: {}\n".format(Spearman)
+        msg += "global overlap at 1 affirmative/negated: {}\n".format(Overlap)
 
     if samples_with_negative_judgement > 0 and samples_with_positive_judgement > 0:
         # Google-RE specific
