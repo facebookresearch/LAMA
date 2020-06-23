@@ -26,8 +26,7 @@ The LAMA probe is described in the following papers:
   year={2019}
 }
 
-@inproceedings{
-petroni2020how,
+@inproceedings{petroni2020how,
   title={How Context Affects Language Models' Factual Predictions},
   author={Fabio Petroni and Patrick Lewis and Aleksandra Piktus and Tim Rockt{\"a}schel and Yuxiang Wu and Alexander H. Miller and Sebastian Riedel},
   booktitle={Automated Knowledge Base Construction},
