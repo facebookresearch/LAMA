@@ -17,13 +17,13 @@ from shutil import copyfile
 from collections import defaultdict
 
 LMs = [
-    {
-        "lm": "transformerxl",
-        "label": "transformerxl",
-        "models_names": ["transformerxl"],
-        "transformerxl_model_name": "transfo-xl-wt103",
-        "transformerxl_model_dir": "pre-trained_language_models/transformerxl/transfo-xl-wt103/",
-    },
+    #{
+    #    "lm": "transformerxl",
+    #    "label": "transformerxl",
+    #    "models_names": ["transformerxl"],
+    #    "transformerxl_model_name": "transfo-xl-wt103",
+    #    "transformerxl_model_dir": "pre-trained_language_models/transformerxl/transfo-xl-wt103/",
+    #},
     {
         "lm": "elmo",
         "label": "elmo",
@@ -56,6 +56,21 @@ LMs = [
         "bert_model_name": "bert-large-cased",
         "bert_model_dir": "pre-trained_language_models/bert/cased_L-24_H-1024_A-16",
     },
+    #{
+    #    "lm": "gpt",
+    #    "label": "gpt",
+    #    "models_names": ["gpt"],
+    #    "gpt_model_name": "openai-gpt",
+    #    "gpt_model_dir": "pre-trained_language_models/gpt/openai-gpt/",
+    #},
+    #{
+    #    "lm": "roberta",
+    #    "label": "roberta",
+    #    "models_names": ["roberta"],
+    #    "roberta_model_name": "pytorch_model.bin",
+    #    "roberta_model_dir": "pre-trained_language_models/roberta/roberta-base/",
+    #    "roberta_vocab_name": "vocab-2016-09-10.txt",
+    #},
 ]
 
 
@@ -119,6 +134,11 @@ def run_experiments(
             print("Relation {} excluded.".format(relation["relation"]))
             print("Exception: {}".format(e))
             continue
+
+        # https://github.com/facebookresearch/LAMA/issues/30
+        if model is not None:
+            del model
+            model = None
 
         if model is None:
             [model_type_name] = args.models_names

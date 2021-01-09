@@ -92,8 +92,8 @@ class Base_Connector():
                 print('Moving model to CUDA')
                 self._cuda()
                 self._model_device = 'cuda'
-        else:
-            print('No CUDA found')
+        # else:
+        #     print('No CUDA found')
 
     def _cuda(self):
         """Move model to GPU."""
