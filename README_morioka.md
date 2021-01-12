@@ -55,7 +55,8 @@ Elmo, RoBERTa も ConceptNet での評価中におそらくメモリサイズの
     * Elmo-5B .. 未実施
     * Transformer-XL .. RuntimeError: $ Torch: invalid memory size -- maybe an overflow? at /pytorch/aten/src/TH/THGeneral.cpp:188 エラー。 
     * GPT .. 大量の word FOO from vocab_subset in model vocabulary!　警告が表示され、評価回数が0となって div0 エラー。
-    * RoBERTa ..　ConceptNetの評価中にメモリ確保エラー。
+    * RoBERTa ..　BERTよりも少し悪い。ConceptNetの評価中にメモリ確保エラー。
+        * https://github.com/facebookresearch/LAMA/issues/16
 
 * TODO
     * P27に対応する文テンプレートが T-REx では不適切 https://github.com/facebookresearch/LAMA/issues/40
