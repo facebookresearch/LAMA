@@ -1,6 +1,6 @@
 # LAMA(LAnguage Model Analysis) を再確認してみた
 
-2021-01-09
+2021-01-12
 
 Yasuhiro MORIOKA
 
@@ -10,16 +10,21 @@ LAMA(LAnguage Model Analysis) の環境をそのまま使って、結果の再�
 
 BERT, BERT-large, Elmoについては Google-RE, T-REx でほぼ同様の結果を得た。Elmo-5Bは未確認。
 
-対応されているはずの Transofmer-XL, GPT, RoBERTa は、いずれも実行できなかった。
+Transformer-XL, GPTはおそらくメモリサイズの問題で実行不可。
+Elmo, RoBERTa も ConceptNet での評価中におそらくメモリサイズの問題で実行不可。
 
 ## 内容
 
 * 環境
     * ThinkPad E495 (AMD Ryzen5 2.1GHz, RAM 32GB, GPUなし)
+    * Windows 10 Home, WSL2, Ubuntu 20.04
 * 修正
     * Elmoモデルの状態クリアを追加
         * https://github.com/facebookresearch/LAMA/issues/30
     * GPT, RoBERTa 向け pre-trained_language_models を定義
+    * RoBERTa向けモデルダウンロード、vocaburaryのintersection取得の修正
+        * huggingface roberta-base でなくfairseq roberta.baseを利用するconnectorコードらしい。
+            * https://github.com/pytorch/fairseq/blob/master/examples/roberta/README.md
     * CUDAが利用できない場合の警告メッセージを抑制
     
 * 実行
@@ -50,13 +55,15 @@ BERT, BERT-large, Elmoについては Google-RE, T-REx でほぼ同様の結果�
     * Elmo-5B .. 未実施
     * Transformer-XL .. RuntimeError: $ Torch: invalid memory size -- maybe an overflow? at /pytorch/aten/src/TH/THGeneral.cpp:188 エラー。 
     * GPT .. 大量の word FOO from vocab_subset in model vocabulary!　警告が表示され、評価回数が0となって div0 エラー。
-    * RoBERTa ..　モデルのロードに失敗。huggingface roberta-baseでなく pytorch/fairseq のモデルを使う必要があるのかもしれない。
+    * RoBERTa ..　ConceptNetの評価中にメモリ確保エラー。
 
 ## 参考
 
 * https://github.com/facebookresearch/LAMA
 * https://arxiv.org/pdf/1909.01066.pdf
 * https://openreview.net/forum?id=025X0zPfn
+
+* https://github.com/pytorch/fairseq/blob/master/examples/roberta/README.md
 
 * http://lotus.kuee.kyoto-u.ac.jp/~kurita/snlp2019_kurita.pdf
 * https://blog.hoxo-m.com/entry/2019/10/24/083000#3-Language-Models-as-Knowledge-Bases

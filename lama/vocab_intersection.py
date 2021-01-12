@@ -21,11 +21,11 @@ CASED_MODELS = [
   #   "cpu": True,
   #   "output_dictionary_size": -1
   # },
-  {
-    # "TransformerXL"
-    "lm": "transformerxl",
-    "transformerxl_model_dir": "pre-trained_language_models/transformerxl/transfo-xl-wt103/",
-  },
+  # {
+  #   # "TransformerXL"
+  #   "lm": "transformerxl",
+  #   "transformerxl_model_dir": "pre-trained_language_models/transformerxl/transfo-xl-wt103/",
+  # },
   {
     # "ELMO ORIGINAL"
     "lm": "elmo",
@@ -37,7 +37,7 @@ CASED_MODELS = [
   {
     # "ELMO ORIGINAL 5.5B"
     "lm": "elmo",
-    "elmo_model_dir": "pre-trained_language_models/elmo/original5.5B/",
+    "elmo_model_dir": "pre-trained_language_models/elmo/original5.5B",
     "elmo_model_name": "elmo_2x4096_512_2048cnn_2xhighway_5.5B",
     "elmo_vocab_name": "vocab-enwiki-news-500000.txt",
     "elmo_warm_up_cycles": 5
@@ -46,15 +46,23 @@ CASED_MODELS = [
     # "BERT BASE CASED"
     "lm": "bert",
     "bert_model_name": "bert-base-cased",
-    "bert_model_dir": "pre-trained_language_models/bert/cased_L-12_H-768_A-12/",
+    "bert_model_dir": "pre-trained_language_models/bert/cased_L-12_H-768_A-12",
     "bert_vocab_name": "vocab.txt"
   },
   {
     # "BERT LARGE CASED"
     "lm" : "bert",
     "bert_model_name": "bert-large-cased",
-    "bert_model_dir": "pre-trained_language_models/bert/cased_L-24_H-1024_A-16/",
+    "bert_model_dir": "pre-trained_language_models/bert/cased_L-24_H-1024_A-16",
     "bert_vocab_name": "vocab.txt"
+  },
+  {
+    # "RoBERTa base"
+    "lm" : "roberta",
+    "roberta_model_name": "model.pt",
+    "roberta_model_dir": "pre-trained_language_models/roberta/roberta.base",
+    "roberta_vocab_name": "dict.txt",
+    "max_sentence_length": 100
   }
 ]
 

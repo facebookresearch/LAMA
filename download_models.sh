@@ -132,15 +132,14 @@ if [[ ! -f bert/cased_L-24_H-1024_A-16/bert_config.json ]]; then
 fi
 
 echo "RoBERTa"
-if [[ ! -f roberta/roberta-base/config.json ]]; then
-  rm -rf 'roberta/roberta-base'
-  mkdir -p 'roberta/roberta-base'
-  cd 'roberta/roberta-base'
-  wget 'https://s3.amazonaws.com/models.huggingface.co/bert/roberta-base-vocab.json' -O vocab.json
-  wget 'https://s3.amazonaws.com/models.huggingface.co/bert/roberta-base-merges.txt' -O merges.txt
-  wget -c 'https://s3.amazonaws.com/models.huggingface.co/bert/roberta-base-pytorch_model.bin' -O 'pytorch_model.bin'
-  wget -c 'https://s3.amazonaws.com/models.huggingface.co/bert/roberta-base-config.json' -O 'config.json'
-  cd ../..
+if [[ ! -f roberta/roberta.base/dict.txt ]]; then
+  rm -rf 'roberta/roberta.base'
+  mkdir -p 'roberta/roberta.base'
+  cd 'roberta'
+  wget -c 'https://dl.fbaipublicfiles.com/fairseq/models/roberta.base.tar.gz'
+  tar -xzf roberta.base.tar.gz
+  rm roberta.base.tar.gz
+  cd ..
 fi
 
 
