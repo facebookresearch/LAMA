@@ -57,6 +57,10 @@ Elmo, RoBERTa も ConceptNet での評価中におそらくメモリサイズの
     * GPT .. 大量の word FOO from vocab_subset in model vocabulary!　警告が表示され、評価回数が0となって div0 エラー。
     * RoBERTa ..　ConceptNetの評価中にメモリ確保エラー。
 
+* TODO
+    * P27に対応する文テンプレートが T-REx では不適切 https://github.com/facebookresearch/LAMA/issues/40
+    * fairseq RoBERTaでなくhuggingface RoBERTaをロードしたい https://github.com/facebookresearch/LAMA/issues/15
+
 ## 参考
 
 * https://github.com/facebookresearch/LAMA
