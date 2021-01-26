@@ -70,7 +70,7 @@ class HfRoberta(Base_Connector):
         # Load pre-trained model (weights)
         self.masked_roberta_model = RobertaForMaskedLM.from_pretrained(roberta_model_name)
         self.masked_roberta_model.eval()
-        print(self.masked_roberta_model.config)
+        #print(self.masked_roberta_model.config)
 
         # ... to get hidden states
         self.roberta_model = self.masked_roberta_model.roberta
