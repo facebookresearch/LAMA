@@ -651,6 +651,9 @@ def main(args, shuffle_data=True, model=None):
     pool.join()
 
     # stats
+    if len(list_of_results) == 0:
+        list_of_results = 1e18  # avoid div0
+
     # Mean reciprocal rank
     MRR /= len(list_of_results)
 
