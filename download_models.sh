@@ -142,6 +142,18 @@ if [[ ! -f roberta/roberta.base/dict.txt ]]; then
   cd ..
 fi
 
+echo "HuggingFace RoBERTa"
+if [[ ! -f roberta/roberta-base/config.json ]]; then
+  rm -rf 'roberta/roberta-base'
+  mkdir -p 'roberta/roberta-base'
+  cd 'roberta/roberta-base'
+  wget 'https://s3.amazonaws.com/models.huggingface.co/bert/roberta-base-vocab.json' -O vocab.json
+  wget 'https://s3.amazonaws.com/models.huggingface.co/bert/roberta-base-merges.txt' -O merges.txt
+  wget -c 'https://s3.amazonaws.com/models.huggingface.co/bert/roberta-base-pytorch_model.bin' -O 'pytorch_model.bin'
+  wget -c 'https://s3.amazonaws.com/models.huggingface.co/bert/roberta-base-config.json' -O 'config.json'
+  cd ../..
+fi
+
 
 cd "$ROOD_DIR"
 echo 'Building common vocab'
