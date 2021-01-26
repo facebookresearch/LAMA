@@ -73,7 +73,7 @@ LMs = [
     #},
     {
         "lm": "hfroberta",
-        "label": "rober-ta-base",
+        "label": "roberta-base",
         "models_names": ["hfroberta"],
         "hfroberta_model_name": "roberta-base",
         "hfroberta_model_dir": "pre-trained_language_models/roberta/roberta-base",
