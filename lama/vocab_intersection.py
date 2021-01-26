@@ -63,6 +63,14 @@ CASED_MODELS = [
     "roberta_model_dir": "pre-trained_language_models/roberta/roberta.base",
     "roberta_vocab_name": "dict.txt",
     "max_sentence_length": 100
+  },
+  {
+    # "hfRoBERTa base"
+    "lm" : "hfroberta",
+    "hfroberta_model_name": "roberta-base",
+    "hfroberta_model_dir": None,
+#    "hfroberta_model_dir": "pre-trained_language_models/roberta/roberta-base",
+#    "hfroberta_vocab_name": "vocab.txt",
   }
 ]
 

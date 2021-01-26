@@ -157,7 +157,8 @@ def run_thread(arguments):
         label_index=arguments["label_index"],
         index_list=arguments["index_list"],
         print_generation=arguments["interactive"],
-        topk=10000,
+#        topk=10000,
+        topk=1000,
     )
     msg += "\n" + return_msg
 
@@ -318,6 +319,10 @@ def main(args, shuffle_data=True, model=None):
         model_name = "BERT_{}".format(args.bert_model_name)
     elif model_type_name == "elmo":
         model_name = "ELMo_{}".format(args.elmo_model_name)
+    elif model_type_name == "roberta":
+        model_name = "RoBERTa_{}".format(args.roberta_model_name)
+    elif model_type_name == "hfroberta":
+        model_name = "hfRoBERTa_{}".format(args.hfroberta_model_name)
     else:
         model_name = model_type_name.title()
 
