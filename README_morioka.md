@@ -22,11 +22,14 @@ Elmo, RoBERTa も ConceptNet での評価中におそらくメモリサイズの
     * Elmoモデルの状態クリアを追加
         * https://github.com/facebookresearch/LAMA/issues/30
     * GPT, RoBERTa 向け pre-trained_language_models を定義
-    * RoBERTa向けモデルダウンロード、vocaburaryのintersection取得の修正
-        * huggingface roberta-base でなくfairseq roberta.baseを利用するconnectorコードらしい。
-            * https://github.com/pytorch/fairseq/blob/master/examples/roberta/README.md
+    * FairSeq/HuggingFace Roberta向けSpecial tokenを定義
+    * Fairseq RoBERTa向けモデルダウンロード、vocaburaryのintersection取得を修正
+    * HuggingFace RoBERTa向けモデルダウンロード, HfRobertaConnectorを作成
+        * https://github.com/facebookresearch/LAMA/issues/15
+        * bert_connectorを基本に gpt_connector のtokernizerの扱いを適用
+    * MRR, precision計算での len(list_of_results) == 0 の場合を処理
     * CUDAが利用できない場合の警告メッセージを抑制
-    
+
 * 実行
     * "The LAMA probe" の手順をそのまま実行。
 
@@ -55,12 +58,41 @@ Elmo, RoBERTa も ConceptNet での評価中におそらくメモリサイズの
     * Elmo-5B .. 未実施
     * Transformer-XL .. RuntimeError: $ Torch: invalid memory size -- maybe an overflow? at /pytorch/aten/src/TH/THGeneral.cpp:188 エラー。 
     * GPT .. 大量の word FOO from vocab_subset in model vocabulary!　警告が表示され、評価回数が0となって div0 エラー。
-    * RoBERTa ..　BERTよりも少し悪い。ConceptNetの評価中にメモリ確保エラー。
+    * Fairseq RoBERTa ..　BERTよりも少し悪い。ConceptNetの評価中にメモリ確保エラー。
         * https://github.com/facebookresearch/LAMA/issues/16
+    * HuggingFace RoBERTa .. 
 
 * TODO
     * P27に対応する文テンプレートが T-REx では不適切 https://github.com/facebookresearch/LAMA/issues/40
-    * fairseq RoBERTaでなくhuggingface RoBERTaをロードしたい https://github.com/facebookresearch/LAMA/issues/15
+
+* 疑問
+    * len(common_vocab) が小さければ、メモリに関するエラーは生じない?
+    * fairseq roberta.base に比べて huggingface roberta-base の成績が明確に悪い
+        * 語彙は同じ? --> おそらく違う
+            * elmo, elmo5B, bert-base, bert-lage ... 21107
+            * + fairseq roberta.base ... 18129
+            * + huggingface roberta-base ... 5254
+            * 語彙を出力してみる。
+            * 'Ġ' の扱い。SPCは'Ġ'にされる。ほか制御文字の扱い。可読文字ではないし共通語委作成時に削除されるはず
+                * https://github.com/huggingface/transformers/issues/3867#issuecomment-616956437
+                * https://github.com/openai/gpt-2/issues/80#issuecomment-487202159
+                * word 先頭の 'Ġ' だけ削除して + hf roberta-base ... 18117 .. ほぼ一致とみてよいか。
+        * 予測も同じ? was_born_in だけででも。
+            * precision@10でも悪いので、本当に悪いのかも。
+    * vocab_intersection での除外条件が雑な気がする。これしかないのかもしれないが。
+        * nlp = spacy('en') に基づく。
+        * stop_word は上記 nlp が返すもの
+        * punctuation, synonym(symbol?)は各wordを nlp(word)の入力として tokenize結果のPOSで判断。よって数字だけでもPUNCTと判断されるケースがたびたび生じている。文脈が不足しているのだろう。
+
+* メモ
+    * 語彙の大きさは同等だがこれまで以上にひどい。
+        * intersectionをとるまでは、やたら制御文字だけ文がある。
+        * 実際にデコードさせタ結果を確認する必要がある。
+        * "<mask>" の前にSPACEをつけて " <mask>"とする必要がある?
+        * 文頭にもSPACEをつける?
+        * SPACEがついていないということは分割されたが先頭ではないトークンということで、そこに区別はあるのか？
+        * 一致をどうやって見ているのか。デコード時に適宜 SPACEを付与してやる必要があるのか。
+        
 
 ## 参考
 
