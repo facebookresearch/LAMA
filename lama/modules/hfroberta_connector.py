@@ -46,6 +46,13 @@ class HfRoberta(Base_Connector):
         # may form a full word look the same.
         # Note that we should be very careful now,
         # tokenizer.convert_tokens_to_ids won't work with our vocabulary.
+
+        # RoBERTa also uses BPE. the bytes_to_unicode function takes all control
+        # and whitespace characters in code points 0-255 and shifts them up
+        # by 256 to make them printable. So space (code point 32) becomes Ġ (code point 288).
+        # (copied from https://github.com/openai/gpt-2/issues/80#issuecomment-487202159).
+        #
+        # Other control characters will be removed during voca_intersection process.
         def convert_word(word):
             if word == ROBERTA_UNK:  # word == OPENAI_UNK:
                 return word
@@ -53,9 +60,7 @@ class HfRoberta(Base_Connector):
                 # Redefine symbol EOS to improve visualization.
                 return ROBERTA_EOS  # OPENAI_EOS
             # return word[:-4] if word.endswith('</w>') else f'{word}##'
-            if word.startswith('Ġ'):
-                return word[1:]
-            return word[:-4] if word.endswith('</w>') else f'{word}'
+            return word[1:] if word.startswith('Ġ') else word
 
         _, gpt_vocab = zip(*sorted(self.tokenizer.decoder.items()))
         self.vocab = [convert_word(word) for word in gpt_vocab]
@@ -216,6 +221,9 @@ class HfRoberta(Base_Connector):
             )
             if isinstance(logits, tuple):  # ケースによって、tupleだったり、そうでなかったり..
                 logits = logits[0]
+            print('########################')
+            print(f'hfroberta logits type is {str(type(logits))}')
+            print('########################')
 
             log_probs = F.log_softmax(logits, dim=-1).cpu()
 
