@@ -63,14 +63,14 @@ LMs = [
     #    "gpt_model_name": "openai-gpt",
     #    "gpt_model_dir": "pre-trained_language_models/gpt/openai-gpt/",
     #},
-    #{
-    #    "lm": "roberta",
-    #    "label": "roberta.base",
-    #    "models_names": ["roberta"],
-    #    "roberta_model_name": "model.pt",
-    #    "roberta_model_dir": "pre-trained_language_models/roberta/roberta.base",
-    #    "roberta_vocab_name": "dict.txt",
-    #},
+    {
+        "lm": "roberta",
+        "label": "roberta.base",
+        "models_names": ["roberta"],
+        "roberta_model_name": "model.pt",
+        "roberta_model_dir": "pre-trained_language_models/roberta/roberta.base",
+        "roberta_vocab_name": "dict.txt",
+    },
     {
         "lm": "hfroberta",
         "label": "roberta-base",
