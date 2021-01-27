@@ -157,8 +157,7 @@ def run_thread(arguments):
         label_index=arguments["label_index"],
         index_list=arguments["index_list"],
         print_generation=arguments["interactive"],
-#        topk=10000,
-        topk=5000,
+        topk=10000,
     )
     msg += "\n" + return_msg
 
