@@ -158,7 +158,7 @@ def run_thread(arguments):
         index_list=arguments["index_list"],
         print_generation=arguments["interactive"],
 #        topk=10000,
-        topk=1000,
+        topk=5000,
     )
     msg += "\n" + return_msg
 
@@ -651,15 +651,15 @@ def main(args, shuffle_data=True, model=None):
     pool.join()
 
     # stats
-    if len(list_of_results) == 0:
-        list_of_results = 1e18  # avoid div0
+    try:
+       # Mean reciprocal rank
+       MRR /= len(list_of_results)
 
-    # Mean reciprocal rank
-    MRR /= len(list_of_results)
-
-    # Precision
-    Precision /= len(list_of_results)
-    Precision1 /= len(list_of_results)
+       # Precision
+       Precision /= len(list_of_results)
+       Precision1 /= len(list_of_results)
+    except ZeriDivisionError:
+       MRR = Precision = Precision1 = 0.0
 
     msg = "all_samples: {}\n".format(len(all_samples))
     msg += "list_of_results: {}\n".format(len(list_of_results))
