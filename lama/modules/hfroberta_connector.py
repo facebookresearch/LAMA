@@ -53,6 +53,8 @@ class HfRoberta(Base_Connector):
                 # Redefine symbol EOS to improve visualization.
                 return ROBERTA_EOS  # OPENAI_EOS
             # return word[:-4] if word.endswith('</w>') else f'{word}##'
+            if word.startswith('Ġ'):
+                return word[1:]
             return word[:-4] if word.endswith('</w>') else f'{word}'
 
         _, gpt_vocab = zip(*sorted(self.tokenizer.decoder.items()))
