@@ -101,7 +101,11 @@ def run_experiments(
     type_Precision1 = defaultdict(list)
     type_count = defaultdict(list)
 
-    results_file = open("last_results.csv", "w+")
+    results_file = open("last_results.csv", "a+")
+    results_file.write(
+        "=={}==\n".format(input_param["label"])
+    )
+    results_file.flush()
 
     for relation in relations:
         pp.pprint(relation)
