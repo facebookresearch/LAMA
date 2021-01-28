@@ -36,7 +36,6 @@ class HfRoberta(Base_Connector):
         self.tokenizer = RobertaTokenizer.from_pretrained(dict_file)
 
         # original vocab
-        self.map_indices = None
 
         # GPT uses different way to represent BPE then BERT. Namely, the
         # final suffixes are indicated with </w> suffix, while pieces that must
@@ -53,14 +52,37 @@ class HfRoberta(Base_Connector):
         # (copied from https://github.com/openai/gpt-2/issues/80#issuecomment-487202159).
         #
         # Other control characters will be removed during voca_intersection process.
-        def convert_word(word):
+        def convert_word0(word):
             if word == ROBERTA_UNK:  # word == OPENAI_UNK:
                 return word
             if word == '\n</w>':
                 # Redefine symbol EOS to improve visualization.
                 return ROBERTA_EOS  # OPENAI_EOS
             # return word[:-4] if word.endswith('</w>') else f'{word}##'
-            return word[1:] if word.startswith('Ġ') else word
+            return word[:-4] if word.endswith('</w>') else f'{word}'
+
+        def convert_word(word):
+            # return convert_word0(word)
+
+            if word == ROBERTA_UNK:
+                return word
+            if word == ROBERTA_MASK:
+                return word
+            if word == ROBERTA_START_SENTENCE:
+                return word
+            if word == ROBERTA_END_SENTENCE:
+                return word
+            if word == ROBERTA_PAD:
+                return word
+
+            if word.startswith('Ġ'):  # the token starts with a whitespace
+                return word[1:]
+            
+            return f'_{word}_'  # the token not start with a white space.
+                                # may be not a head of a word,
+                                # or may be a head of a sentence.
+
+            # need duplitation check?
 
         _, gpt_vocab = zip(*sorted(self.tokenizer.decoder.items()))
         self.vocab = [convert_word(word) for word in gpt_vocab]
@@ -94,22 +116,22 @@ class HfRoberta(Base_Connector):
         self.mask_index = mask_index
 
     def __get_token_ids_from_tensor(self, indexed_string):
-        token_ids = []
-        if self.map_indices is not None:
-            # map indices to subset of the vocabulary
-            indexed_string = self.convert_ids(indexed_string)
-            token_ids = np.asarray(indexed_string)
-        else:
-            token_ids = indexed_string
+        token_ids = indexed_string
         return token_ids
 
     def _cuda(self):
         self.masked_roberta_model.cuda()
 
     def get_id(self, string):
+        try:
+            return [ self.inverse_vocab[string] ]
+        except:
+            tokenized_text = self.tokenizer.tokenize(f' {string}')
+            indexed_string = self.tokenizer.convert_tokens_to_ids(tokenized_text)
+            return indexed_string
+
         tokenized_text = self.tokenizer.tokenize(string)
         indexed_string = self.tokenizer.convert_tokens_to_ids(tokenized_text)
-        # indexed_string = self.convert_ids(indexed_string)
         return indexed_string
 
     def __get_input_tensors_batch(self, sentences_list):
@@ -167,12 +189,14 @@ class HfRoberta(Base_Connector):
         for sentence_idx, sentence in enumerate(sentences):
             if sentence_idx > 0:
                 tokenized_text.append(ROBERTA_END_SENTENCE) # OPENAI_EOS)
+
+            sentence = ' ' + sentence
             for chunk_idx, chunk in enumerate(sentence.split('[MASK]')):
                 if chunk_idx > 0:
                     masked_indices.append(len(tokenized_text))
                     segment_indices.append(sentence_idx)
                     tokenized_text.append(self.mask_symbol)
-                chunk = chunk.strip()
+                #chunk = chunk.strip()
                 if chunk:
                     tokenized_sentence = self.tokenizer.tokenize(chunk)
                     segment_id = np.full(len(tokenized_sentence),
@@ -207,7 +231,7 @@ class HfRoberta(Base_Connector):
             return None
         if try_cuda:
             self.try_cuda()
-
+        #print(sentences_list)
         tokens_tensor, segments_tensor, attention_mask_tensor, masked_indices_list, tokenized_text_list = self.__get_input_tensors_batch(sentences_list)
 
         if logger is not None:
@@ -219,11 +243,7 @@ class HfRoberta(Base_Connector):
                 token_type_ids=segments_tensor.to(self._model_device),
                 attention_mask=attention_mask_tensor.to(self._model_device),
             )
-            if isinstance(logits, tuple):  # ケースによって、tupleだったり、そうでなかったり..
-                logits = logits[0]
-            print('########################')
-            print(f'hfroberta logits type is {str(type(logits))}')
-            print('########################')
+            logits = logits[0]
 
             log_probs = F.log_softmax(logits, dim=-1).cpu()
 

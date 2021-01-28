@@ -230,6 +230,7 @@ def filter_samples(model, samples, vocab_subset, max_sentence_length, template):
         if "obj_label" in sample and "sub_label" in sample:
 
             obj_label_ids = model.get_id(sample["obj_label"])
+#            print(f'obj_label: {sample["obj_label"]} -> {obj_label_ids}')
 
             if obj_label_ids:
                 recostructed_word = " ".join(
@@ -237,6 +238,8 @@ def filter_samples(model, samples, vocab_subset, max_sentence_length, template):
                 ).strip()
             else:
                 recostructed_word = None
+
+#            print(f'reconstructed_word: {recostructed_word}')
 
             excluded = False
             if not template or len(template) == 0:
