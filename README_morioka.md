@@ -1,17 +1,20 @@
 # LAMA(LAnguage Model Analysis) を再確認してみた
 
 2021-01-12
+2021-01-29 更新
 
 Yasuhiro MORIOKA
 
 ## 概要
 
-LAMA(LAnguage Model Analysis) の環境をそのまま使って、結果の再現を試みた。README.md の手順どおりに進めただけで、独自のデータセットやモデルで確認していない。
+LAMA(LAnguage Model Analysis) の環境をそのまま使って、結果の再現を試みた。
+README.md の手順どおりに進めただけで、独自のデータセットやモデルで確認していない。
 
-BERT, BERT-large, Elmoについては Google-RE, T-REx でほぼ同様の結果を得た。Elmo-5Bは未確認。
+BERT, BERT-large, Elmo については Google-RE, T-REx でほぼ同様の結果を得た。Elmo-5Bは未確認。
+Transformer-XL, GPTはおそらくメモリサイズの問題で実行できない。
+メモリサイズの問題か ConceptNetの評価中に強制終了する。
 
-Transformer-XL, GPTはおそらくメモリサイズの問題で実行不可。
-Elmo, RoBERTa も ConceptNet での評価中におそらくメモリサイズの問題で実行不可。
+RoBERTaは配布状態ではサポートされないが、動作させた。BERTより少し劣る結果。
 
 ## 内容
 
@@ -21,12 +24,13 @@ Elmo, RoBERTa も ConceptNet での評価中におそらくメモリサイズの
 * 修正
     * Elmoモデルの状態クリアを追加
         * https://github.com/facebookresearch/LAMA/issues/30
-    * GPT, RoBERTa 向け pre-trained_language_models を定義
+        * 非効率だが relation 別の評価のたびに￥モデルをクリア。
+    * GPT, FairSeq RoBERTa 向け pre-trained_language_models を定義
     * FairSeq/HuggingFace Roberta向けSpecial tokenを定義
     * Fairseq RoBERTa向けモデルダウンロード、vocaburaryのintersection取得を修正
     * HuggingFace RoBERTa向けモデルダウンロード, HfRobertaConnectorを作成
         * https://github.com/facebookresearch/LAMA/issues/15
-        * bert_connectorを基本に gpt_connector のtokernizerの扱いを適用
+        * bert_connectorを基本に gpt_connector のtokernizerの扱いを流用。
     * MRR, precision計算での len(list_of_results) == 0 の場合を処理
     * CUDAが利用できない場合の警告メッセージを抑制
 
@@ -60,39 +64,18 @@ Elmo, RoBERTa も ConceptNet での評価中におそらくメモリサイズの
     * GPT .. 大量の word FOO from vocab_subset in model vocabulary!　警告が表示され、評価回数が0となって div0 エラー。
     * Fairseq RoBERTa ..　BERTよりも少し悪い。ConceptNetの評価中にメモリ確保エラー。
         * https://github.com/facebookresearch/LAMA/issues/16
-    * HuggingFace RoBERTa .. 
+    * HuggingFace RoBERTa .. Fairseq RoBERTaと同様。
+    * 各種エラーはメモリサイズさえ大きければ生じない印象。
 
 * TODO
     * P27に対応する文テンプレートが T-REx では不適切 https://github.com/facebookresearch/LAMA/issues/40
 
 * 疑問
-    * len(common_vocab) が小さければ、メモリに関するエラーは生じない?
-    * fairseq roberta.base に比べて huggingface roberta-base の成績が明確に悪い
-        * 語彙は同じ? --> おそらく違う
-            * elmo, elmo5B, bert-base, bert-lage ... 21107
-            * + fairseq roberta.base ... 18129
-            * + huggingface roberta-base ... 5254
-            * 語彙を出力してみる。
-            * 'Ġ' の扱い。SPCは'Ġ'にされる。ほか制御文字の扱い。可読文字ではないし共通語委作成時に削除されるはず
-                * https://github.com/huggingface/transformers/issues/3867#issuecomment-616956437
-                * https://github.com/openai/gpt-2/issues/80#issuecomment-487202159
-                * word 先頭の 'Ġ' だけ削除して + hf roberta-base ... 18117 .. ほぼ一致とみてよいか。
-        * 予測も同じ? was_born_in だけででも。
-            * precision@10でも悪いので、本当に悪いのかも。
-    * vocab_intersection での除外条件が雑な気がする。これしかないのかもしれないが。
+    * vocab_intersection での除外条件が粗い印象。これしかないのかもしれないが。
         * nlp = spacy('en') に基づく。
         * stop_word は上記 nlp が返すもの
-        * punctuation, synonym(symbol?)は各wordを nlp(word)の入力として tokenize結果のPOSで判断。よって数字だけでもPUNCTと判断されるケースがたびたび生じている。文脈が不足しているのだろう。
-
-* メモ
-    * 語彙の大きさは同等だがこれまで以上にひどい。
-        * intersectionをとるまでは、やたら制御文字だけ文がある。
-        * 実際にデコードさせタ結果を確認する必要がある。
-        * "<mask>" の前にSPACEをつけて " <mask>"とする必要がある?
-        * 文頭にもSPACEをつける?
-        * SPACEがついていないということは分割されたが先頭ではないトークンということで、そこに区別はあるのか？
-        * 一致をどうやって見ているのか。デコード時に適宜 SPACEを付与してやる必要があるのか。
-        
+        * punctuation, symbolは各wordを nlp(word)の入力として tokenize結果のPOSで判断。よって数字だけでもPUNCTと判断されるケースがたびたび生じている。文脈が不足しているのだろう。
+    * BPEを利用しているので、同じ語でも " word" と "word" の2つのトークンが対応する（はず）。前者は文中で登場するもの。後者は文頭に登場するか、語頭に続くものとして登場する。LAMAは1単語が複数トークンに分かれるケースを除外しているので、後者は語彙から除くことになる。しかし、文頭に登場する場合は前者と同様の意味を持つのではないか? obj-rel-subj のうちobjは文頭に出現することが多いだろうと考えると、そこで情報が失われていることはないのだろうか。まずはそこは捨てて考えてみているということか?
 
 ## 参考
 

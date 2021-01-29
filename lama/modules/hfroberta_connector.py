@@ -190,7 +190,7 @@ class HfRoberta(Base_Connector):
             if sentence_idx > 0:
                 tokenized_text.append(ROBERTA_END_SENTENCE) # OPENAI_EOS)
 
-            sentence = ' ' + sentence
+            sentence = ' ' + sentence  # add " " to the head of sentence
             for chunk_idx, chunk in enumerate(sentence.split('[MASK]')):
                 if chunk_idx > 0:
                     masked_indices.append(len(tokenized_text))

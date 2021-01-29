@@ -161,6 +161,6 @@ if [ ! -f "$DST_DIR/common_vocab_cased.txt" ]; then
   python lama/vocab_intersection.py
 else
   echo 'Already exists. Run to re-build:'
-  echo 'python util_KB_completion.py'
+  echo 'python lama/vocab_intersection.py'
 fi
 
