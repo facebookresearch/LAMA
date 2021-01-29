@@ -185,11 +185,17 @@ BERT pretrained models can be loaded both: (i) passing the name of the model and
 * __--bert-vocab-name/--bvn__ : name of vocabulary used to pre-train the BERT model (default = 'vocab.txt')
 
 
-### RoBERTa
+### RoBERTa (Fairseq)
 
 * __--roberta-model-dir/--rmd__ : directory that contains the RoBERTa pre-trained model and the vocabulary (__REQUIRED__)
 * __--roberta-model-name/--rmn__ : name of the RoBERTa pre-trained model (default = 'model.pt')
 * __--roberta-vocab-name/--rvn__ : name of vocabulary used to pre-train the RoBERTa model (default = 'dict.txt')
+
+
+### RoBERTa (HuggingFace)
+
+* __--hfroberta-model-dir/--hmd__ : directory that contains the HuggingFace RoBERTa pre-trained model and the vocabulary (__REQUIRED__)
+* __--hfroberta-model-name/--hmn__ : name of the HuggingFace RoBERTa pre-trained model (default = 'roberta-base')
 
 
 ### ELMo

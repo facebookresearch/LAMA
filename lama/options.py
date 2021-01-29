@@ -48,6 +48,7 @@ def get_general_parser():
     __add_gpt_args(parser)
     __add_transformerxl_args(parser)
     __add_roberta_args(parser)
+    __add_hfroberta_args(parser)
     return parser
 
 
@@ -152,6 +153,24 @@ def __add_roberta_args(parser):
         dest="roberta_vocab_name",
         default="dict.txt",
         help="name of vocabulary used to pre-train the ROBERTA model (default = 'vocab.txt')",
+    )
+    return group
+
+
+def __add_hfroberta_args(parser):
+    group = parser.add_argument_group("HuggingFace RoBERTa")
+    group.add_argument(
+        "--hfroberta-model-dir",
+        "--hmd",
+        dest="hfroberta_model_dir",
+        help="directory that contains the HuggingFace ROBERTA pre-trained model and the vocabulary",
+    )
+    group.add_argument(
+        "--hfroberta-model-name",
+        "--hmn",
+        dest="hfroberta_model_name",
+        default="roberta-base",
+        help="name of the HuggingFace ROBERTA pre-trained model (default = 'model.pt')",
     )
     return group
 
