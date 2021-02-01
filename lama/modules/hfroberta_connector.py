@@ -123,6 +123,45 @@ class HfRoberta(Base_Connector):
         self.masked_roberta_model.cuda()
 
     def get_id(self, string):
+        tokenized_text = self.tokenizer.tokenize(f'<s>i {string}</s>')
+        print(tokenized_text)
+        tokenized_text = tokenized_text[2:-1]
+        indexed_string = self.tokenizer.convert_tokens_to_ids(tokenized_text)
+        return indexed_string
+
+    def get_id2(self, string):
+        try :
+            '''
+            "  {string}"としてもtokenizerでは先頭SPACEを抜いてトークン列を返す。
+            よって、そのままではSPACEにつづく語頭ではないトークンと思われる。
+            文頭に出てくるパターンのみ。
+            なので、まずはとーかないずされたとして、idにもどせるか。
+            さもなくば、しかたないので複数トークにわかれるかもしれないが、そのあとで先頭にくうあ箔をつけてみる。
+            objectiveをたいしょうなので、文頭に来ることはない。よってSPACEを先頭にもトークンになるはず。
+
+            文頭と文中で、ちがった分割がされるかのうせもい可能性もあるし。
+
+            GPTはトークンの最後にSPACEの /w をつける。
+            fairseq robertaは？
+            '''
+            tokenized_text = [ f'Ġ{string}' ]
+            indexed_string = self.tokenizer.convert_tokens_to_ids(tokenized_text)
+            #print("A", indexed_string)
+        except:
+            tokenized_text = self.tokenizer.tokenize(string)
+            tokenized_text[0] = f'Ġ{tokenized_text[0]}'
+            indexed_string = self.tokenizer.convert_tokens_to_ids(tokenized_text)
+            print("B", indexed_string)
+        return indexed_string
+
+    def get_id1(self, string):
+        tokenized_text = self.tokenizer.tokenize(string)
+        tokenized_text[0] = f'Ġ{tokenized_text[0]}'
+        indexed_string = self.tokenizer.convert_tokens_to_ids(tokenized_text)
+        # indexed_string = self.convert_ids(indexed_string)
+        return indexed_string
+
+    def get_id0(self, string):
         try:
             return [ self.inverse_vocab[string] ]
         except:
