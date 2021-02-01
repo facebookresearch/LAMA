@@ -54,7 +54,7 @@ class GPT(Base_Connector):
         # Load pre-trained model (weights)
         self.gpt_model = OpenAIGPTLMHeadModel.from_pretrained(gpt_model_name)
         self.gpt_model.eval()
-        print(self.gpt_model.config)
+        # print(self.gpt_model.config)
 
         # Sanity check.
         assert len(self.vocab) == self.gpt_model.config.vocab_size
