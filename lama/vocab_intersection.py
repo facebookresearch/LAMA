@@ -68,7 +68,7 @@ CASED_MODELS = [
     # "hfRoBERTa base"
     "lm" : "hfroberta",
     "hfroberta_model_name": "roberta-base",
-    "hfroberta_model_dir": None,
+    "hfroberta_model_dir": "pre-trained_language_models/roberta/roberta-base",
   }
 ]
 
@@ -79,20 +79,23 @@ LOWERCASED_MODELS = [
    # "BERT BASE UNCASED"
    "lm": "bert",
    "bert_model_name": "bert-base-uncased",
-   "bert_model_dir": None,
+   #"bert_model_dir": None,
+   "bert_model_dir": "pre-trained_language_models/bert/uncased_L-12_H-768_A-12",
    "bert_vocab_name": "vocab.txt"
  },
  {
    # "BERT LARGE UNCASED"
    "lm": "bert",
    "bert_model_name": "bert-large-uncased",
-   "bert_model_dir": None,
+   #"bert_model_dir": None,
+   "bert_model_dir": "pre-trained_language_models/bert/uncased_L-24_H-1024_A-16",
    "bert_vocab_name": "vocab.txt"
  },
  {
    # "OpenAI GPT"
    "lm": "gpt",
-   "gpt_model_dir": None,
+   #"gpt_model_dir": None,
+   "gpt_model_dir": "pre-trained_language_models/gpt/openai-gpt",
    "gpt_model_name": "openai-gpt"
  }
 ]
