@@ -37,14 +37,7 @@ class HfRoberta(Base_Connector):
 
         # original vocab
 
-        # GPT uses different way to represent BPE then BERT. Namely, the
-        # final suffixes are indicated with </w> suffix, while pieces that must
-        # be followed are written as is. In BERT the prefixes are written as is
-        # while the parts that must follow (not be followed!) have '##' prefix.
-        # There is no one-to-one coversion. But at least we may make pieces that
-        # may form a full word look the same.
-        # Note that we should be very careful now,
-        # tokenizer.convert_tokens_to_ids won't work with our vocabulary.
+        # The following process is baded on gpt_connector.
 
         # RoBERTa also uses BPE. the bytes_to_unicode function takes all control
         # and whitespace characters in code points 0-255 and shifts them up
@@ -52,18 +45,7 @@ class HfRoberta(Base_Connector):
         # (copied from https://github.com/openai/gpt-2/issues/80#issuecomment-487202159).
         #
         # Other control characters will be removed during voca_intersection process.
-        def convert_word0(word):
-            if word == ROBERTA_UNK:  # word == OPENAI_UNK:
-                return word
-            if word == '\n</w>':
-                # Redefine symbol EOS to improve visualization.
-                return ROBERTA_EOS  # OPENAI_EOS
-            # return word[:-4] if word.endswith('</w>') else f'{word}##'
-            return word[:-4] if word.endswith('</w>') else f'{word}'
-
         def convert_word(word):
-            # return convert_word0(word)
-
             if word == ROBERTA_UNK:
                 return word
             if word == ROBERTA_MASK:
@@ -123,33 +105,9 @@ class HfRoberta(Base_Connector):
         self.masked_roberta_model.cuda()
 
     def get_id(self, string):
-        '''
-        (obj を示す)stringをtokenizeしてid列に直す。
-
-        このときstringは先頭がSPACEで始まらない。
-
-        しかし、内部のvocabは先頭がSPACEで始まる場合に限っている。
-
-
-        "  {string}"としてもtokenizerでは先頭SPACEを抜いてトークン列を返す。
-        よって、そのままではSPACEにつづく語頭ではないトークンと思われる。
-        文頭に出てくるパターンのみ。
-        なので、まずはとーかないずされたとして、idにもどせるか。
-        さもなくば、しかたないので複数トークにわかれるかもしれないが、そのあとで先頭にくうあ箔をつけてみる。
-        objectiveをたいしょうなので、文頭に来ることはない。よってSPACEを先頭にもトークンになるはず。
-
-        文頭と文中で、ちがった分割がされるかのうせもい可能性もあるし。
-
-        GPTはトークンの最後にSPACEの /w をつける。
-        fairseq robertaは？ あれは自前でうまくやっている
-
-        最終的に<s>, </s> で囲むが、これは不要かもしれない。
-        それよりも先頭にかならうず1トークンになるだろう 'i' を string前のSPACEの前に置くことで、
-        強制的に、非文頭の単語としてとーかないずされるように持ってくる
-        '''
-        #tokenized_text = self.tokenizer.tokenize(f'<s>i {string}</s>')  # '<s>', 'i', '</s>' はそれぞれ1トークンになるはず
-        #tokenized_text = tokenized_text[2:-1]
-        tokenized_text = self.tokenizer.tokenize(f'a {string}')  # 'a' はそれぞれ1トークンになるはず
+        # tokenize "a " + string, in order to create token_id(s) corresponding to the string.
+        # the first token of the string starts with a whitespace.
+        tokenized_text = self.tokenizer.tokenize(f'a {string}')
         tokenized_text = tokenized_text[1:]
         indexed_string = self.tokenizer.convert_tokens_to_ids(tokenized_text)
         return indexed_string
