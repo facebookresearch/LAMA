@@ -166,15 +166,15 @@ class HfRoberta(Base_Connector):
         segment_indices = []
         for sentence_idx, sentence in enumerate(sentences):
             if sentence_idx > 0:
-                tokenized_text.append(ROBERTA_END_SENTENCE) # OPENAI_EOS)
+                tokenized_text.append(ROBERTA_START_SENTENCE)
+                segment_indices.append(sentence_idx)
 
-            sentence = ' ' + sentence  # add " " to the head of sentence
             for chunk_idx, chunk in enumerate(sentence.split('[MASK]')):
                 if chunk_idx > 0:
                     masked_indices.append(len(tokenized_text))
                     segment_indices.append(sentence_idx)
                     tokenized_text.append(self.mask_symbol)
-                #chunk = chunk.strip()
+                chunk = chunk.strip()
                 if chunk:
                     tokenized_sentence = self.tokenizer.tokenize(chunk)
                     segment_id = np.full(len(tokenized_sentence),
@@ -183,6 +183,8 @@ class HfRoberta(Base_Connector):
 
                     tokenized_text.extend(tokenized_sentence)
                     segment_indices.extend(segment_id)
+            tokenized_text.append(ROBERTA_END_SENTENCE)
+            segment_indices.append(sentence_idx)
 
         # add [CLS] token at the beginning
         tokenized_text.insert(0,ROBERTA_START_SENTENCE)
