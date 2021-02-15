@@ -12,17 +12,23 @@ BERT_UNK = "[UNK]"
 BERT_CLS = "[CLS]"
 BERT_SEP = "[SEP]"
 BERT_PAD = "[PAD]"
+
 ELMO_UNK = "<UNK>"
 ELMO_START_SENTENCE = "<S>"
 ELMO_END_SENTENCE = "</S>"
+
 OPENAI_UNK = "<unk>"
 OPENAI_EOS = "<eos>"
-ROBERTA_MASK = "<mask>"
-ROBERTA_START_SENTENCE = "<s>"
-ROBERTA_END_SENTENCE = "</s>"
-ROBERTA_VOCAB_SIZE = 50266
-ROBERTA_UNK = "<unk>"
-ROBERTA_PAD = "<pad>"
+
+ROBERTA_MASK = "<mask>"         # MASK for fairseq/huggingface RoBERTa
+ROBERTA_VOCAB_SIZE = 50266      # for fairseq RoBERTa
+
+ROBERTA_START_SENTENCE = "<s>"  # BOS, CLS for huggingface RoBERTa
+ROBERTA_END_SENTENCE = "</s>"   # EOS, SEP for huggingface RoBERTa
+ROBERTA_UNK = "<unk>"           # UNK for huggingface RoBERTa
+ROBERTA_PAD = "<pad>"           # PAD for huggingface RoBERTa
+
+GPT2_EOS = "<|endoftext|>"      # BOS, EOS, UNK, PAD for GPT2
 
 
 SPECIAL_SYMBOLS = [
@@ -41,6 +47,7 @@ SPECIAL_SYMBOLS = [
     ROBERTA_PAD,
     ROBERTA_START_SENTENCE,
     ROBERTA_END_SENTENCE,
+    GPT2_EOS
     ]
 
 SPACE_NORMALIZER = re.compile(r"\s+")

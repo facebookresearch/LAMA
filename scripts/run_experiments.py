@@ -42,37 +42,37 @@ LMs = [
     #    "elmo_model_dir": "pre-trained_language_models/elmo/original5.5B/",
     #    "elmo_warm_up_cycles": 10,
     #},
-    #{
-    #    "lm": "bert",
-    #    "label": "bert_base",
-    #    "models_names": ["bert"],
-    #    "bert_model_name": "bert-base-cased",
-    #    "bert_model_dir": "pre-trained_language_models/bert/cased_L-12_H-768_A-12",
-    #},
-    #{
-    #    "lm": "bert",
-    #    "label": "bert_large",
-    #    "models_names": ["bert"],
-    #    "bert_model_name": "bert-large-cased",
-    #    "bert_model_dir": "pre-trained_language_models/bert/cased_L-24_H-1024_A-16",
-    #},
-    #{
-    #    "lm": "gpt",
-    #    "label": "gpt",
-    #    "models_names": ["gpt"],
-    #    "gpt_model_name": "openai-gpt",
-    #    "gpt_model_dir": "pre-trained_language_models/gpt/openai-gpt/",
-    #    "lowercase": True,
-    #    "common_vocab_filename": "pre-trained_language_models/common_vocab_lowercased.txt",
-    #},
-    #{
-    #    "lm": "roberta",
-    #    "label": "roberta.base",
-    #    "models_names": ["roberta"],
-    #    "roberta_model_name": "model.pt",
-    #    "roberta_model_dir": "pre-trained_language_models/roberta/roberta.base",
-    #    "roberta_vocab_name": "dict.txt",
-    #},
+    {
+        "lm": "bert",
+        "label": "bert_base",
+        "models_names": ["bert"],
+        "bert_model_name": "bert-base-cased",
+        "bert_model_dir": "pre-trained_language_models/bert/cased_L-12_H-768_A-12",
+    },
+    {
+        "lm": "bert",
+        "label": "bert_large",
+        "models_names": ["bert"],
+        "bert_model_name": "bert-large-cased",
+        "bert_model_dir": "pre-trained_language_models/bert/cased_L-24_H-1024_A-16",
+    },
+    {
+        "lm": "gpt",
+        "label": "gpt",
+        "models_names": ["gpt"],
+        "gpt_model_name": "openai-gpt",
+        "gpt_model_dir": "pre-trained_language_models/gpt/openai-gpt/",
+        "lowercase": True,
+        "common_vocab_filename": "pre-trained_language_models/common_vocab_lowercased.txt",
+    },
+    {
+        "lm": "roberta",
+        "label": "roberta.base",
+        "models_names": ["roberta"],
+        "roberta_model_name": "model.pt",
+        "roberta_model_dir": "pre-trained_language_models/roberta/roberta.base",
+        "roberta_vocab_name": "dict.txt",
+    },
     {
         "lm": "hfroberta",
         "label": "roberta-base",
@@ -80,6 +80,15 @@ LMs = [
         "hfroberta_model_name": "roberta-base",
         "hfroberta_model_dir": "pre-trained_language_models/roberta/roberta-base",
     },
+    {
+        # "OpenAIGPT2"
+        "lm": "gpt2",
+        "label": "gpt2",
+        "models_names": ["gpt2"],
+        "gpt2_model_name": "gpt2",
+        "gpt2_model_dir": "pre-trained_language_models/gpt/gpt2",
+    },
+
 ]
 
 

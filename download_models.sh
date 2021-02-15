@@ -29,6 +29,18 @@ if [[ ! -f gpt/openai-gpt/config.json ]]; then
   cd ../..
 fi
 
+echo "GPT2"
+if [[ ! -f gpt/gpt2/config.json ]]; then
+  rm -rf 'gpt/gpt2'
+  mkdir -p 'gpt/gpt2'
+  cd 'gpt/gpt2'
+  wget 'https://s3.amazonaws.com/models.huggingface.co/bert/gpt2-vocab.json' -O vocab.json
+  wget 'https://s3.amazonaws.com/models.huggingface.co/bert/gpt2-merges.txt' -O merges.txt
+  wget -c 'https://s3.amazonaws.com/models.huggingface.co/bert/gpt2-pytorch_model.bin' -O 'pytorch_model.bin'
+  wget -c 'https://s3.amazonaws.com/models.huggingface.co/bert/gpt2-config.json' -O 'config.json'
+  cd ../..
+fi
+
 echo "BERT BASE LOWERCASED"
 if [[ ! -f bert/uncased_L-12_H-768_A-12/bert_config.json ]]; then
   mkdir -p 'bert'

@@ -217,6 +217,12 @@ BERT pretrained models can be loaded both: (i) passing the name of the model and
 * __--gpt-model-name/--gmn__ : name of the gpt pre-trained model (default = 'openai-gpt')
 
 
+### GPT2
+
+* __--gpt2-model-dir/--g2d__ : directory that contains the gpt2 pre-trained model and the vocabulary (__REQUIRED__)
+* __--gpt2-model-name/--g2n__ : name of the gpt2 pre-trained model (default = 'gpt2')
+
+
 ## Evaluate Language Model(s) Generation
 
 options:
