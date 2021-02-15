@@ -203,10 +203,17 @@ def lowercase_samples(samples, use_negated_probes=False):
         sample["obj_label"] = sample["obj_label"].lower()
         sample["sub_label"] = sample["sub_label"].lower()
         lower_masked_sentences = []
-        for sentence in sample["masked_sentences"]:
-            sentence = sentence.lower()
-            sentence = sentence.replace(base.MASK.lower(), base.MASK)
-            lower_masked_sentences.append(sentence)
+        try:
+            for sentence in sample["masked_sentences"]:
+                sentence = sentence.lower()
+                sentence = sentence.replace(base.MASK.lower(), base.MASK)
+                lower_masked_sentences.append(sentence)
+        except KeyError:
+            for evidence in sample['evidences']:  # TREx
+                sentence = evidence['masked_sentence']
+                sentence = sentence.lower()
+                sentence = sentence.replace(base.MASK.lower(), base.MASK)
+                lower_masked_sentences.append(sentence)
         sample["masked_sentences"] = lower_masked_sentences
 
         if "negated" in sample and use_negated_probes:
@@ -229,7 +236,7 @@ def filter_samples(model, samples, vocab_subset, max_sentence_length, template):
         if "obj_label" in sample and "sub_label" in sample:
 
             obj_label_ids = model.get_id(sample["obj_label"])
-#            print(f'obj_label: {sample["obj_label"]} -> {obj_label_ids}')
+            # print(f'obj_label: {sample["obj_label"]} -> {obj_label_ids}')
 
             if obj_label_ids:
                 recostructed_word = " ".join(
@@ -238,7 +245,7 @@ def filter_samples(model, samples, vocab_subset, max_sentence_length, template):
             else:
                 recostructed_word = None
 
-#            print(f'reconstructed_word: {recostructed_word}')
+            #  print(f'reconstructed_word: {recostructed_word}')
 
             excluded = False
             if not template or len(template) == 0:
@@ -392,6 +399,14 @@ def main(args, shuffle_data=True, model=None):
     else:
         # keep samples as they are
         all_samples = data
+        # TREx data
+        for i, sample in enumerate(all_samples):
+            if 'masked_sentences' not in sample.keys():
+                sample['masked_sentences'] = []
+                for evidence in sample['evidences']:
+                    sample['masked_sentences'].append(evidence['masked_sentence'])
+            if i == 0:
+                print('not masked_sentences, but masked_sentence.')
 
     all_samples, ret_msg = filter_samples(
         model, data, vocab_subset, args.max_sentence_length, args.template
