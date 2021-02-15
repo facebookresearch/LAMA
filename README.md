@@ -10,6 +10,7 @@ LAMA exposes a transparent and unique interface to use:
 - BERT (Devlin et al., 2018)
 - ELMo (Peters et al., 2018)
 - GPT (Radford et al., 2018)
+- GPT-2 (Radford et al., 2019)
 - RoBERTa (Liu et al., 2019)
 
 Actually, LAMA is also a beautiful animal.
@@ -217,7 +218,7 @@ BERT pretrained models can be loaded both: (i) passing the name of the model and
 * __--gpt-model-name/--gmn__ : name of the gpt pre-trained model (default = 'openai-gpt')
 
 
-### GPT2
+### GPT-2
 
 * __--gpt2-model-dir/--g2d__ : directory that contains the gpt2 pre-trained model and the vocabulary (__REQUIRED__)
 * __--gpt2-model-name/--g2n__ : name of the gpt2 pre-trained model (default = 'gpt2')
