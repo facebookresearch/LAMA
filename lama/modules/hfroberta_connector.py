@@ -164,6 +164,11 @@ class HfRoberta(Base_Connector):
         tokenized_text = []
         masked_indices = []
         segment_indices = []
+
+        # add [CLS] or [BOS] token at the beginning
+        tokenized_text.append(ROBERTA_START_SENTENCE)
+        segment_indices.append(0)
+
         for sentence_idx, sentence in enumerate(sentences):
             for chunk_idx, chunk in enumerate(sentence.split('[MASK]')):
                 if chunk_idx > 0:
@@ -184,10 +189,6 @@ class HfRoberta(Base_Connector):
             # add [EOS] or [SEP] token at the end of sequence or sentence
             tokenized_text.append(ROBERTA_END_SENTENCE)
             segment_indices.append(sentence_idx)
-
-        # add [CLS] or [BOS] token at the beginning
-        tokenized_text.insert(0,ROBERTA_START_SENTENCE)
-        segment_indices.insert(0,0)
 
         # look for masked indices
         masked_indices = []
