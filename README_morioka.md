@@ -2,6 +2,7 @@
 
 2021-01-12
 2021-01-29 更新
+2021-02-15 更新
 
 Yasuhiro MORIOKA
 
@@ -9,12 +10,15 @@ Yasuhiro MORIOKA
 
 LAMA(LAnguage Model Analysis) の環境をそのまま使って、結果の再現を試みた。
 README.md の手順どおりに進めただけで、独自のデータセットやモデルで確認していない。
+LAMA-UHN, Negated-LAMA は試しておきたい。
 
 BERT, BERT-large, Elmo については Google-RE, T-REx でほぼ同様の結果を得た。Elmo-5Bは未確認。
-Transformer-XL, GPTはおそらくメモリサイズの問題で実行できない。
+Transformer-XL, GPTはおそらく実行環境のメモリサイズの問題で実行できていない。
 メモリサイズの問題か ConceptNetの評価中に強制終了する。
 
 RoBERTaは配布状態ではサポートされないが、動作させた。BERTより少し劣る結果。
+
+GPT-2もサポートした。
 
 ## 内容
 
@@ -33,6 +37,7 @@ RoBERTaは配布状態ではサポートされないが、動作させた。BERT
         * bert_connectorを基本に gpt_connector のtokernizerの扱いを流用。
     * MRR, precision計算での len(list_of_results) == 0 の場合を処理
     * CUDAが利用できない場合の警告メッセージを抑制
+    * GPT-2 モデルダウンロード、connectorを作成。
 
 * 実行
     * "The LAMA probe" の手順をそのまま実行。
