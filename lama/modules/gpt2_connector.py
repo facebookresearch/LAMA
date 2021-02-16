@@ -131,8 +131,7 @@ class GPT2(Base_Connector):
         # as result some of output "symbols" correspond to positions. To fix
         # that we have to manually remove logits for positions.
         with torch.no_grad():
-            logits = self.gpt_model(src_tensor_batch.to(self._model_device))
-            logits = logits[0]
+            logits = self.gpt_model(src_tensor_batch.to(self._model_device))[0]
             logits = logits[..., :self.gpt_model.config.vocab_size]
 
             log_probs = torch.nn.functional.log_softmax(logits, dim=-1).cpu()

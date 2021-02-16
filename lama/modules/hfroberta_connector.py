@@ -222,8 +222,7 @@ class HfRoberta(Base_Connector):
                 input_ids=tokens_tensor.to(self._model_device),
                 token_type_ids=segments_tensor.to(self._model_device),
                 attention_mask=attention_mask_tensor.to(self._model_device),
-            )
-            logits = logits[0]
+            )[0]
 
             log_probs = F.log_softmax(logits, dim=-1).cpu()
 
