@@ -405,8 +405,8 @@ def main(args, shuffle_data=True, model=None):
                 sample['masked_sentences'] = []
                 for evidence in sample['evidences']:
                     sample['masked_sentences'].append(evidence['masked_sentence'])
-            if i == 0:
-                print('not masked_sentences, but masked_sentence.')
+                if i == 0:
+                    print('not masked_sentences, but masked_sentence.')
 
     all_samples, ret_msg = filter_samples(
         model, data, vocab_subset, args.max_sentence_length, args.template
