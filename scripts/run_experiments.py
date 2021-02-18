@@ -24,24 +24,24 @@ LMs = [
     #    "transformerxl_model_name": "transfo-xl-wt103",
     #    "transformerxl_model_dir": "pre-trained_language_models/transformerxl/transfo-xl-wt103/",
     #},
-    #{
-    #    "lm": "elmo",
-    #    "label": "elmo",
-    #    "models_names": ["elmo"],
-    #    "elmo_model_name": "elmo_2x4096_512_2048cnn_2xhighway",
-    #    "elmo_vocab_name": "vocab-2016-09-10.txt",
-    #    "elmo_model_dir": "pre-trained_language_models/elmo/original",
-    #    "elmo_warm_up_cycles": 10,
-    #},
-    #{
-    #    "lm": "elmo",
-    #    "label": "elmo5B",
-    #    "models_names": ["elmo"],
-    #    "elmo_model_name": "elmo_2x4096_512_2048cnn_2xhighway_5.5B",
-    #    "elmo_vocab_name": "vocab-enwiki-news-500000.txt",
-    #    "elmo_model_dir": "pre-trained_language_models/elmo/original5.5B/",
-    #    "elmo_warm_up_cycles": 10,
-    #},
+    {
+        "lm": "elmo",
+        "label": "elmo",
+        "models_names": ["elmo"],
+        "elmo_model_name": "elmo_2x4096_512_2048cnn_2xhighway",
+        "elmo_vocab_name": "vocab-2016-09-10.txt",
+        "elmo_model_dir": "pre-trained_language_models/elmo/original",
+        "elmo_warm_up_cycles": 10,
+    },
+    {
+        "lm": "elmo",
+        "label": "elmo5B",
+        "models_names": ["elmo"],
+        "elmo_model_name": "elmo_2x4096_512_2048cnn_2xhighway_5.5B",
+        "elmo_vocab_name": "vocab-enwiki-news-500000.txt",
+        "elmo_model_dir": "pre-trained_language_models/elmo/original5.5B/",
+        "elmo_warm_up_cycles": 10,
+    },
     {
         "lm": "bert",
         "label": "bert_base",
@@ -81,16 +81,13 @@ LMs = [
         "hfroberta_model_dir": "pre-trained_language_models/roberta/roberta-base",
     },
     {
-        # "OpenAIGPT2"
         "lm": "gpt2",
         "label": "gpt2",
         "models_names": ["gpt2"],
         "gpt2_model_name": "gpt2",
         "gpt2_model_dir": "pre-trained_language_models/gpt/gpt2",
     },
-
 ]
-
 
 def run_experiments(
     relations,
@@ -246,7 +243,10 @@ def get_Squad_parameters(data_path_pre="data/"):
 def run_all_LMs(parameters):
     for ip in LMs:
         print(ip["label"])
-        run_experiments(*parameters, input_param=ip, use_negated_probes=False)
+
+        use_negated_probes = False  # vanilla LAMA
+        # use_negated_probes = True  # Negated-LAMA
+        run_experiments(*parameters, input_param=ip, use_negated_probes=use_negated_probes)
 
 
 if __name__ == "__main__":
