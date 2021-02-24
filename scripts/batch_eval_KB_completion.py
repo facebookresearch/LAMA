@@ -201,7 +201,10 @@ def lowercase_samples(samples, use_negated_probes=False):
     new_samples = []
     for sample in samples:
         sample["obj_label"] = sample["obj_label"].lower()
-        sample["sub_label"] = sample["sub_label"].lower()
+        try:
+            sample["sub_label"] = sample["sub_label"].lower()
+        except KeyError:  # ConceptNet
+            None
         lower_masked_sentences = []
         try:
             for sentence in sample["masked_sentences"]:
