@@ -244,6 +244,10 @@ python lama/get_contextual_embeddings.py \
 --emd "pre-trained_language_models/elmo/original/"
 ```
 
+## Unified vocabulary
+the intersection of the vocabularies for all considered models
+- [cased](https://dl.fbaipublicfiles.com/LAMA/common_vocab_cased.txt)
+- [uncased](https://dl.fbaipublicfiles.com/LAMA/common_vocab_uncased.txt)
 
 ## Troubleshooting
 
