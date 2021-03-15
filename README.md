@@ -245,7 +245,7 @@ python lama/get_contextual_embeddings.py \
 ```
 
 ## Unified vocabulary
-the intersection of the vocabularies for all considered models
+The intersection of the vocabularies for all considered models
 - [cased](https://dl.fbaipublicfiles.com/LAMA/common_vocab_cased.txt)
 - [uncased](https://dl.fbaipublicfiles.com/LAMA/common_vocab_uncased.txt)
 
