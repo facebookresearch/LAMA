@@ -41,7 +41,7 @@ def get_general_parser():
         dest="max_sentence_length",
         type=int,
         default=100,
-        help="max sentence length",
+        help="max sentence lenght",
     )
     __add_bert_args(parser)
     __add_elmo_args(parser)

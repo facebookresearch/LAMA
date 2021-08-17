@@ -245,9 +245,7 @@ def run_all_LMs(parameters):
     for ip in LMs:
         print(ip["label"])
 
-        use_negated_probes = False  # vanilla LAMA
-        # use_negated_probes = True  # Negated-LAMA
-        run_experiments(*parameters, input_param=ip, use_negated_probes=use_negated_probes)
+        run_experiments(*parameters, input_param=ip, use_negated_probes=False)
 
 
 if __name__ == "__main__":

@@ -12,98 +12,98 @@ import lama.modules.base_connector as base
 
 
 CASED_MODELS = [
-#   {
-        #   # "FAIRSEQ WIKI103"
-        #   "lm": "fairseq",
-        #   "data": "pre-trained_language_models/fairseq/wiki103_fconv_lm/",
-        #   "fairseq_model_name": "wiki103.pt",
-        #   "task": "language_modeling",
-        #   "cpu": True,
-        #   "output_dictionary_size": -1
-        # },
-        # {
-        #   # "TransformerXL"
-        #   "lm": "transformerxl",
-        #   "transformerxl_model_dir": "pre-trained_language_models/transformerxl/transfo-xl-wt103/",
-#   },
-    {
-        # "ELMO ORIGINAL"
-        "lm": "elmo",
-        "elmo_model_dir": "pre-trained_language_models/elmo/original",
-        "elmo_model_name": "elmo_2x4096_512_2048cnn_2xhighway",
-        "elmo_vocab_name": "vocab-2016-09-10.txt",
-        "elmo_warm_up_cycles": 5
-    },
-    {
-        # "ELMO ORIGINAL 5.5B"
-        "lm": "elmo",
-        "elmo_model_dir": "pre-trained_language_models/elmo/original5.5B",
-        "elmo_model_name": "elmo_2x4096_512_2048cnn_2xhighway_5.5B",
-        "elmo_vocab_name": "vocab-enwiki-news-500000.txt",
-        "elmo_warm_up_cycles": 5
-    },
-    {
-        # "BERT BASE CASED"
-        "lm": "bert",
-        "bert_model_name": "bert-base-cased",
-        "bert_model_dir": "pre-trained_language_models/bert/cased_L-12_H-768_A-12",
-        "bert_vocab_name": "vocab.txt"
-    },
-    {
-        # "BERT LARGE CASED"
-        "lm" : "bert",
-        "bert_model_name": "bert-large-cased",
-        "bert_model_dir": "pre-trained_language_models/bert/cased_L-24_H-1024_A-16",
-        "bert_vocab_name": "vocab.txt"
-    },
-    {
-        # "RoBERTa base"
-        "lm" : "roberta",
-        "roberta_model_name": "model.pt",
-        "roberta_model_dir": "pre-trained_language_models/roberta/roberta.base",
-        "roberta_vocab_name": "dict.txt",
-        "max_sentence_length": 100
-    },
-    {
-        # "hfRoBERTa base"
-        "lm" : "hfroberta",
-        "hfroberta_model_name": "roberta-base",
-        "hfroberta_model_dir": "pre-trained_language_models/roberta/roberta-base",
-    },
-    {
-        # "OpenAI GPT-2"
-        "lm": "gpt2",
-        "gpt2_model_name": "gpt2",
-        "gpt2_model_dir": "pre-trained_language_models/gpt/gpt2",
-    },
+  # {
+  #   # "FAIRSEQ WIKI103"
+  #   "lm": "fairseq",
+  #   "data": "pre-trained_language_models/fairseq/wiki103_fconv_lm/",
+  #   "fairseq_model_name": "wiki103.pt",
+  #   "task": "language_modeling",
+  #   "cpu": True,
+  #   "output_dictionary_size": -1
+  # },
+  # {
+  #   # "TransformerXL"
+  #   "lm": "transformerxl",
+  #   "transformerxl_model_dir": "pre-trained_language_models/transformerxl/transfo-xl-wt103/",
+  # },
+  {
+    # "ELMO ORIGINAL"
+    "lm": "elmo",
+    "elmo_model_dir": "pre-trained_language_models/elmo/original",
+    "elmo_model_name": "elmo_2x4096_512_2048cnn_2xhighway",
+    "elmo_vocab_name": "vocab-2016-09-10.txt",
+    "elmo_warm_up_cycles": 5
+  },
+  {
+    # "ELMO ORIGINAL 5.5B"
+    "lm": "elmo",
+    "elmo_model_dir": "pre-trained_language_models/elmo/original5.5B",
+    "elmo_model_name": "elmo_2x4096_512_2048cnn_2xhighway_5.5B",
+    "elmo_vocab_name": "vocab-enwiki-news-500000.txt",
+    "elmo_warm_up_cycles": 5
+  },
+  {
+    # "BERT BASE CASED"
+    "lm": "bert",
+    "bert_model_name": "bert-base-cased",
+    "bert_model_dir": "pre-trained_language_models/bert/cased_L-12_H-768_A-12",
+    "bert_vocab_name": "vocab.txt"
+  },
+  {
+    # "BERT LARGE CASED"
+    "lm" : "bert",
+    "bert_model_name": "bert-large-cased",
+    "bert_model_dir": "pre-trained_language_models/bert/cased_L-24_H-1024_A-16",
+    "bert_vocab_name": "vocab.txt"
+  },
+  {
+    # "RoBERTa base"
+    "lm" : "roberta",
+    "roberta_model_name": "model.pt",
+    "roberta_model_dir": "pre-trained_language_models/roberta/roberta.base",
+    "roberta_vocab_name": "dict.txt",
+    "max_sentence_length": 100
+  },
+  {
+    # "hfRoBERTa base"
+    "lm" : "hfroberta",
+    "hfroberta_model_name": "roberta-base",
+    "hfroberta_model_dir": "pre-trained_language_models/roberta/roberta-base",
+  },
+  {
+    # "OpenAI GPT-2"
+    "lm": "gpt2",
+    "gpt2_model_name": "gpt2",
+    "gpt2_model_dir": "pre-trained_language_models/gpt/gpt2",
+  },
 ]
 
 CASED_COMMON_VOCAB_FILENAME = "pre-trained_language_models/common_vocab_cased.txt"
 
 LOWERCASED_MODELS = [
-    {
-        # "BERT BASE UNCASED"
-        "lm": "bert",
-        "bert_model_name": "bert-base-uncased",
-        #"bert_model_dir": None,
-        "bert_model_dir": "pre-trained_language_models/bert/uncased_L-12_H-768_A-12",
-        "bert_vocab_name": "vocab.txt"
-    },
-    {
-        # "BERT LARGE UNCASED"
-        "lm": "bert",
-        "bert_model_name": "bert-large-uncased",
-        #"bert_model_dir": None,
-        "bert_model_dir": "pre-trained_language_models/bert/uncased_L-24_H-1024_A-16",
-        "bert_vocab_name": "vocab.txt"
-    },
-    {
-        # "OpenAI GPT"
-        "lm": "gpt",
-        #"gpt_model_dir": None,
-        "gpt_model_dir": "pre-trained_language_models/gpt/openai-gpt",
-        "gpt_model_name": "openai-gpt"
-    },
+  {
+    # "BERT BASE UNCASED"
+    "lm": "bert",
+    "bert_model_name": "bert-base-uncased",
+    #"bert_model_dir": None,
+    "bert_model_dir": "pre-trained_language_models/bert/uncased_L-12_H-768_A-12",
+    "bert_vocab_name": "vocab.txt"
+  },
+  {
+    # "BERT LARGE UNCASED"
+    "lm": "bert",
+    "bert_model_name": "bert-large-uncased",
+    #"bert_model_dir": None,
+    "bert_model_dir": "pre-trained_language_models/bert/uncased_L-24_H-1024_A-16",
+    "bert_vocab_name": "vocab.txt"
+  },
+  {
+    # "OpenAI GPT"
+    "lm": "gpt",
+    #"gpt_model_dir": None,
+    "gpt_model_dir": "pre-trained_language_models/gpt/openai-gpt",
+    "gpt_model_name": "openai-gpt"
+  },
 ]
 
 LOWERCASED_COMMON_VOCAB_FILENAME = "pre-trained_language_models/common_vocab_lowercased.txt"
