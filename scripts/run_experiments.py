@@ -111,7 +111,7 @@ def run_experiments(
 
     results_file = open("last_results.csv", "a+")
     results_file.write(
-        "=={}==\n".format(input_param["label"])
+        "{},{}\n".format("lm_label", input_param["label"])
     )
     results_file.flush()
 
@@ -244,7 +244,6 @@ def get_Squad_parameters(data_path_pre="data/"):
 def run_all_LMs(parameters):
     for ip in LMs:
         print(ip["label"])
-
         run_experiments(*parameters, input_param=ip, use_negated_probes=False)
 
 
