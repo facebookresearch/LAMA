@@ -650,15 +650,12 @@ def main(args, shuffle_data=True, model=None):
     pool.join()
 
     # stats
-    try:
-       # Mean reciprocal rank
-       MRR /= len(list_of_results)
+    # Mean reciprocal rank
+    MRR /= len(list_of_results)
 
-       # Precision
-       Precision /= len(list_of_results)
-       Precision1 /= len(list_of_results)
-    except ZeroDivisionError:
-       MRR = Precision = Precision1 = 0.0
+    # Precision
+    Precision /= len(list_of_results)
+    Precision1 /= len(list_of_results)
 
     msg = "all_samples: {}\n".format(len(all_samples))
     msg += "list_of_results: {}\n".format(len(list_of_results))
