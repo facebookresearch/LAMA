@@ -201,22 +201,12 @@ def lowercase_samples(samples, use_negated_probes=False):
     new_samples = []
     for sample in samples:
         sample["obj_label"] = sample["obj_label"].lower()
-        try:
-            sample["sub_label"] = sample["sub_label"].lower()
-        except KeyError:  # ConceptNet
-            None
+        sample["sub_label"] = sample["sub_label"].lower()
         lower_masked_sentences = []
-        try:
-            for sentence in sample["masked_sentences"]:
-                sentence = sentence.lower()
-                sentence = sentence.replace(base.MASK.lower(), base.MASK)
-                lower_masked_sentences.append(sentence)
-        except KeyError:
-            for evidence in sample['evidences']:  # TREx
-                sentence = evidence['masked_sentence']
-                sentence = sentence.lower()
-                sentence = sentence.replace(base.MASK.lower(), base.MASK)
-                lower_masked_sentences.append(sentence)
+        for sentence in sample["masked_sentences"]:
+            sentence = sentence.lower()
+            sentence = sentence.replace(base.MASK.lower(), base.MASK)
+            lower_masked_sentences.append(sentence)
         sample["masked_sentences"] = lower_masked_sentences
 
         if "negated" in sample and use_negated_probes:
@@ -399,14 +389,6 @@ def main(args, shuffle_data=True, model=None):
     else:
         # keep samples as they are
         all_samples = data
-        # TREx data
-        for i, sample in enumerate(all_samples):
-            if 'masked_sentences' not in sample.keys():
-                sample['masked_sentences'] = []
-                for evidence in sample['evidences']:
-                    sample['masked_sentences'].append(evidence['masked_sentence'])
-                if i == 0:
-                    print('not masked_sentences, but masked_sentence.')
 
     all_samples, ret_msg = filter_samples(
         model, data, vocab_subset, args.max_sentence_length, args.template

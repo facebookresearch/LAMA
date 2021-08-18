@@ -154,12 +154,6 @@ def run_experiments(
             print("Exception: {}".format(e))
             continue
 
-        # fix https://github.com/facebookresearch/LAMA/issues/30
-        if input_param["lm"] in ["elmo"]:
-            if model is not None:
-                del model
-                model = None
-
         if model is None:
             [model_type_name] = args.models_names
             model = build_model_by_name(model_type_name, args)
