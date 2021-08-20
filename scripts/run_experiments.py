@@ -17,13 +17,13 @@ from shutil import copyfile
 from collections import defaultdict
 
 LMs = [
-    {
-        "lm": "transformerxl",
-        "label": "transformerxl",
-        "models_names": ["transformerxl"],
-        "transformerxl_model_name": "transfo-xl-wt103",
-        "transformerxl_model_dir": "pre-trained_language_models/transformerxl/transfo-xl-wt103/",
-    },
+    #{
+    #    "lm": "transformerxl",
+    #    "label": "transformerxl",
+    #    "models_names": ["transformerxl"],
+    #    "transformerxl_model_name": "transfo-xl-wt103",
+    #    "transformerxl_model_dir": "pre-trained_language_models/transformerxl/transfo-xl-wt103/",
+    #},
     {
         "lm": "elmo",
         "label": "elmo",
@@ -56,8 +56,38 @@ LMs = [
         "bert_model_name": "bert-large-cased",
         "bert_model_dir": "pre-trained_language_models/bert/cased_L-24_H-1024_A-16",
     },
+    {
+        "lm": "gpt",
+        "label": "gpt",
+        "models_names": ["gpt"],
+        "gpt_model_name": "openai-gpt",
+        "gpt_model_dir": "pre-trained_language_models/gpt/openai-gpt/",
+        "lowercase": True,
+        "common_vocab_filename": "pre-trained_language_models/common_vocab_lowercased.txt",
+    },
+    {
+        "lm": "roberta",
+        "label": "roberta.base",
+        "models_names": ["roberta"],
+        "roberta_model_name": "model.pt",
+        "roberta_model_dir": "pre-trained_language_models/roberta/roberta.base",
+        "roberta_vocab_name": "dict.txt",
+    },
+    {
+        "lm": "hfroberta",
+        "label": "roberta-base",
+        "models_names": ["hfroberta"],
+        "hfroberta_model_name": "roberta-base",
+        "hfroberta_model_dir": "pre-trained_language_models/roberta/roberta-base",
+    },
+    {
+        "lm": "gpt2",
+        "label": "gpt2",
+        "models_names": ["gpt2"],
+        "gpt2_model_name": "gpt2",
+        "gpt2_model_dir": "pre-trained_language_models/gpt/gpt2",
+    },
 ]
-
 
 def run_experiments(
     relations,
@@ -79,7 +109,11 @@ def run_experiments(
     type_Precision1 = defaultdict(list)
     type_count = defaultdict(list)
 
-    results_file = open("last_results.csv", "w+")
+    results_file = open("last_results.csv", "a+")
+    results_file.write(
+        "{},{}\n".format("lm_label", input_param["label"])
+    )
+    results_file.flush()
 
     for relation in relations:
         pp.pprint(relation)

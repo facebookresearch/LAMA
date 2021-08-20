@@ -29,6 +29,18 @@ if [[ ! -f gpt/openai-gpt/config.json ]]; then
   cd ../..
 fi
 
+echo "GPT2"
+if [[ ! -f gpt/gpt2/config.json ]]; then
+  rm -rf 'gpt/gpt2'
+  mkdir -p 'gpt/gpt2'
+  cd 'gpt/gpt2'
+  wget 'https://s3.amazonaws.com/models.huggingface.co/bert/gpt2-vocab.json' -O vocab.json
+  wget 'https://s3.amazonaws.com/models.huggingface.co/bert/gpt2-merges.txt' -O merges.txt
+  wget -c 'https://s3.amazonaws.com/models.huggingface.co/bert/gpt2-pytorch_model.bin' -O 'pytorch_model.bin'
+  wget -c 'https://s3.amazonaws.com/models.huggingface.co/bert/gpt2-config.json' -O 'config.json'
+  cd ../..
+fi
+
 echo "BERT BASE LOWERCASED"
 if [[ ! -f bert/uncased_L-12_H-768_A-12/bert_config.json ]]; then
   mkdir -p 'bert'
@@ -131,6 +143,29 @@ if [[ ! -f bert/cased_L-24_H-1024_A-16/bert_config.json ]]; then
   cd ../../
 fi
 
+echo "RoBERTa"
+if [[ ! -f roberta/roberta.base/dict.txt ]]; then
+  rm -rf 'roberta/roberta.base'
+  mkdir -p 'roberta/roberta.base'
+  cd 'roberta'
+  wget -c 'https://dl.fbaipublicfiles.com/fairseq/models/roberta.base.tar.gz'
+  tar -xzf roberta.base.tar.gz
+  rm roberta.base.tar.gz
+  cd ..
+fi
+
+echo "HuggingFace RoBERTa"
+if [[ ! -f roberta/roberta-base/config.json ]]; then
+  rm -rf 'roberta/roberta-base'
+  mkdir -p 'roberta/roberta-base'
+  cd 'roberta/roberta-base'
+  wget 'https://s3.amazonaws.com/models.huggingface.co/bert/roberta-base-vocab.json' -O vocab.json
+  wget 'https://s3.amazonaws.com/models.huggingface.co/bert/roberta-base-merges.txt' -O merges.txt
+  wget -c 'https://s3.amazonaws.com/models.huggingface.co/bert/roberta-base-pytorch_model.bin' -O 'pytorch_model.bin'
+  wget -c 'https://s3.amazonaws.com/models.huggingface.co/bert/roberta-base-config.json' -O 'config.json'
+  cd ../..
+fi
+
 
 cd "$ROOD_DIR"
 echo 'Building common vocab'
@@ -138,6 +173,6 @@ if [ ! -f "$DST_DIR/common_vocab_cased.txt" ]; then
   python lama/vocab_intersection.py
 else
   echo 'Already exists. Run to re-build:'
-  echo 'python util_KB_completion.py'
+  echo 'python lama/vocab_intersection.py'
 fi
 

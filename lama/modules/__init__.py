@@ -9,6 +9,8 @@ from .elmo_connector import Elmo
 from .gpt_connector import GPT
 from .transformerxl_connector import TransformerXL
 from .roberta_connector import Roberta
+from .hfroberta_connector import HfRoberta
+from .gpt2_connector import GPT2
 
 
 def build_model_by_name(lm, args, verbose=True):
@@ -22,7 +24,9 @@ def build_model_by_name(lm, args, verbose=True):
         bert=Bert,
         gpt=GPT,
         transformerxl=TransformerXL,
-        roberta=Roberta
+        roberta=Roberta,
+        hfroberta=HfRoberta,
+        gpt2=GPT2
     )
     if lm not in MODEL_NAME_TO_CLASS:
         raise ValueError("Unrecognized Language Model: %s." % lm)

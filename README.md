@@ -10,6 +10,7 @@ LAMA exposes a transparent and unique interface to use:
 - BERT (Devlin et al., 2018)
 - ELMo (Peters et al., 2018)
 - GPT (Radford et al., 2018)
+- GPT-2 (Radford et al., 2019)
 - RoBERTa (Liu et al., 2019)
 
 Actually, LAMA is also a beautiful animal.
@@ -185,11 +186,17 @@ BERT pretrained models can be loaded both: (i) passing the name of the model and
 * __--bert-vocab-name/--bvn__ : name of vocabulary used to pre-train the BERT model (default = 'vocab.txt')
 
 
-### RoBERTa
+### RoBERTa (Fairseq)
 
 * __--roberta-model-dir/--rmd__ : directory that contains the RoBERTa pre-trained model and the vocabulary (__REQUIRED__)
 * __--roberta-model-name/--rmn__ : name of the RoBERTa pre-trained model (default = 'model.pt')
 * __--roberta-vocab-name/--rvn__ : name of vocabulary used to pre-train the RoBERTa model (default = 'dict.txt')
+
+
+### RoBERTa (HuggingFace)
+
+* __--hfroberta-model-dir/--hmd__ : directory that contains the HuggingFace RoBERTa pre-trained model and the vocabulary (__REQUIRED__)
+* __--hfroberta-model-name/--hmn__ : name of the HuggingFace RoBERTa pre-trained model (default = 'roberta-base')
 
 
 ### ELMo
@@ -209,6 +216,12 @@ BERT pretrained models can be loaded both: (i) passing the name of the model and
 
 * __--gpt-model-dir/--gmd__ : directory that contains the gpt pre-trained model and the vocabulary (__REQUIRED__)
 * __--gpt-model-name/--gmn__ : name of the gpt pre-trained model (default = 'openai-gpt')
+
+
+### GPT-2
+
+* __--gpt2-model-dir/--g2d__ : directory that contains the gpt2 pre-trained model and the vocabulary (__REQUIRED__)
+* __--gpt2-model-name/--g2n__ : name of the gpt2 pre-trained model (default = 'gpt2')
 
 
 ## Evaluate Language Model(s) Generation
