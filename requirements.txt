@@ -1,5 +1,5 @@
 Cython==0.29.2
-numpy==1.15.1
+numpy==1.22.0
 torch==1.0.1
 pytorch-pretrained-bert==0.6.1
 allennlp==0.8.5
